@@ -25,7 +25,8 @@
     }
     .nav__logo { display: flex; align-items: center; }
     .nav__logo img { width: 130px; filter: brightness(0); opacity: 0.88; }
-    .nav__links { display: flex; gap: 36px; list-style: none; }
+    .nav__links { display: flex; gap: 36px; list-style: none; font-family: sans-serif;
+    color: #626262; }
     .nav__links a {
       font-family: 'Jost', sans-serif; font-weight: 300; font-size: 0.72rem;
       letter-spacing: 0.2em; text-transform: uppercase; color: #242424;
@@ -325,7 +326,7 @@ position: relative;
       .content__inner {
         width: 80%;
         max-width: 680px;
-        margin: -410px 0 0 0;
+        margin: -540px 0 0 0;
         font-size: 20px;
       }
       .form {
@@ -345,7 +346,7 @@ position: relative;
       /* Static hint tooltip repositioned for larger screen */
       #cursorTip {
         left: 530px;
-        top: 295px;
+        top: 195px;
       }
       /* Caption repositioned — image is smaller/higher on big screen */
       .photo-caption {
@@ -373,7 +374,13 @@ position: relative;
 
   <nav>
     <span class="nav__logo"><img src="logo/big-text.png" alt="Scott Olivia"></span>
-    <ul class="nav__links"></ul>
+    <ul class="nav__links">
+      <!-- <li>About</li>
+      <li>Materials</li>
+      <li>Design Philosophy</li>
+      <li>Contact</li> -->
+      <li>Menu =</li>
+    </ul>
   </nav>
 
   <main class="content">
@@ -381,7 +388,7 @@ position: relative;
     <!-- LEFT 50%: photo zone with hotspots -->
     <div class="photo-zone" id="photoZone">
 
-      <img class="photo-zone__img" id="heroImg" src="img/1.png" alt="Scott Olivia showroom" draggable="false">
+      <img class="photo-zone__img" id="heroImg" src="img/1-b.png" alt="Scott Olivia showroom" draggable="false">
       <p class="photo-caption" style="position:absolute; bottom:18px; left:55px; font-family:sans-serif; font-size:0.78rem; color:rgba(255,255,255,0.38); letter-spacing:0.04em; pointer-events:none; z-index:5;">Showroom featuring our current catalog items</p>
 
       <!--
@@ -463,7 +470,7 @@ position: relative;
     <div class="d-backdrop" id="dBackdrop"></div>
     <div class="d-card">
       <div class="d-img-col">
-        <img id="dImg" src="rug.png" alt="Versails Area Rug" style="display: block;">
+        <img id="dImg" src="img/rug.png" alt="Versails Area Rug" style="display: block;">
         <div id="dImgPh" class="d-img-ph" style="display: none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <rect x="3" y="3" width="18" height="18" rx="2"></rect>
@@ -586,7 +593,7 @@ position: relative;
       ]
     },
     'rug': {
-      name: 'Versails Area Rug', img: 'rug.png',
+      name: 'Versails Area Rug', img: 'img/rug.png',
       specs: [
         { l:'Type',         v:'Area Rug' },
         { l:'Composition',  v:'Hand-knotted New Zealand wool; silk highlights' },
