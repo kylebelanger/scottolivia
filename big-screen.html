@@ -1,0 +1,786 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scott Olivia — Furniture Design Boutique and Soft Furnishings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&amp;family=Jost:wght@200;300;400&amp;display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: 'Jost', sans-serif; font-weight: 300; background: #888; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 60px; padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      background-color: rgba(255,255,255,0.97); border-bottom: 2px solid #242424;
+    }
+    .nav__logo { display: flex; align-items: center; }
+    .nav__logo img { width: 130px; filter: brightness(0); opacity: 0.88; }
+    .nav__links { display: flex; gap: 36px; list-style: none; }
+    .nav__links a {
+      font-family: 'Jost', sans-serif; font-weight: 300; font-size: 0.72rem;
+      letter-spacing: 0.2em; text-transform: uppercase; color: #242424;
+      text-decoration: none; opacity: 0.65; transition: opacity 0.25s;
+    }
+    .nav__links a:hover { opacity: 1; }
+
+    /* ── MAIN LAYOUT ── */
+    .content {
+      position: fixed; top: 60px; left: 0; right: 0; bottom: 0;
+      z-index: 50; display: flex; align-items: stretch;
+    }
+
+    .special-text-one {
+      background-color: #55472c73;
+    padding: 5px;
+    border-radius: 10px;
+    color: #ffffff91;
+    }
+
+    .special-text-two {
+          background-color: #2c425573;
+    padding: 5px;
+    border-radius: 10px;
+    color: #ffffff91;
+    }
+
+    /* ── LEFT: photo zone — exactly 50% ── */
+    .photo-zone {
+      width: 50%;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      /* background: #111; */
+    }
+
+    /*
+      The image fills the photo zone with object-fit:cover.
+      Because it is position:absolute inset:0, getBoundingClientRect()
+      returns the same rect as the photo-zone element itself.
+      Hotspot Y uses the photo-zone rect directly — no +offset needed.
+      We use object-position to crop the ceiling and show the furniture.
+    */
+    .photo-zone__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    /* height: 100%; */
+    height: auto;
+    object-fit: cover;
+    object-position: 8% 35%;
+    display: block;
+    image-rendering: high-quality;
+    z-index: 1;
+    pointer-events: none;
+
+    scale: 1;
+    margin: 150px 0 0 0;
+
+    /* scale: .85;*/
+    mask-image: linear-gradient(transparent 0%, black 20%);
+    /* mask-image: radial-gradient(circle, black 78%, rgba(0, 0, 0, 0) 95%); */
+    }
+
+    /* ── RIGHT: info panel — exactly 50% ── */
+    .content__panel {
+      width: 50%;
+      flex-shrink: 0;
+      background: rgb(120 120 120 / 95%);
+      border-left: 6px solid #bfbfbf;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 60;
+    }
+    .content__inner {
+      width: 75%;
+      max-width: 460px;
+      text-align: left;
+      margin: -160px 0 0 0;
+      line-height: 1.4;
+      font-size: 17px !important;
+    }
+
+    /* ── LOGO ── */
+    .logo-img {
+      display: block; width: 100%; max-width: 320px; margin: 0 auto 15px;
+      filter: brightness(0); opacity: 0.85;
+      animation: fadeUp 1.2s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .logo-wordmark {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400;
+      font-size: clamp(2.8rem, 4vw, 4rem); line-height: 1; color: #1a1a1a;
+      margin-bottom: 28px; display: none;
+    }
+
+    /* ── BODY TEXT ── */
+    .tagline {
+      font-family: 'Aptos', sans-serif; color: #1c1c1c;
+      line-height: 1.7;
+      margin-bottom: 14px; width: 95%; margin-left: 2%;
+      animation: fadeUp 1.0s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .meta {
+      font-family: 'Aptos', sans-serif; color: #1c1c1c;
+      line-height: 1.7;
+      margin: 0 0 14px 0; width: 95%; margin-left: 2%;
+      animation: fadeUp 1.0s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* ── FORM ── */
+    .form {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      margin: 45px 0 0 0;
+      animation: fadeUp 1.0s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .form__row { display: flex; align-items: stretch; width: 95%; max-width: 440px; }
+    .form__input {
+      flex: 1 1 0; min-width: 0; background: #ffffff;
+      border: 1px solid #9e9b98; border-right: none; color: #1c1c1c;
+      padding: 0 14px; height: 44px; outline: none;
+      transition: border-color 0.18s; -webkit-appearance: none; border-radius: 0;
+    }
+    .form__input::placeholder { color: #aaa8a5; }
+    .form__input:focus { border-color: #555; }
+    .form__input.error { border-color: #b03020; }
+    .form__btn {
+      flex: 0 0 auto; background: #ffffff; border: 1px solid #9e9b98; color: #1c1c1c;
+      height: 44px; cursor: pointer; transition: background 0.18s, border-color 0.18s;
+      white-space: nowrap; border-radius: 0; -webkit-appearance: none;
+      line-height: 1; margin: 0 0 0 5px; padding: 0 18px; font-size: 12px;
+    }
+    .form__btn:hover { background: #f2f0ee; border-color: #777; }
+    .form__btn:active { background: #e8e5e2; }
+    .form__error { color: #c6c6c6; display: none; text-align: center; font-size: 0.78rem; }
+    .form__error.visible { display: block; }
+    .form__success {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 0.92rem; color: #2a2a2a; display: none; text-align: center;
+    }
+    .form__success.visible { display: block; }
+
+    /* ── HOTSPOTS ──
+       Positioned absolutely over photo-zone.
+       X: CSS % of photo-zone width (0–100%).
+       Y: set by JS — reads the photo-zone rect and image render scale.
+    */
+    .hs {
+      position: absolute;
+      pointer-events: all;
+      background: transparent;
+      cursor: none;
+      z-index: 10;
+      /* DEBUG — uncomment to see zones:
+      outline: 2px solid rgba(255,80,0,0.8) !important;
+      background: rgba(255,80,0,0.12) !important; */
+    }
+
+    /* ── CURSOR TOOLTIP ── */
+    #cursorTip {
+      position: fixed;
+      z-index: 600;
+      pointer-events: none;
+      /* Default: static hint box visible at top-left of image */
+      left: 275px;
+      top: 175px;
+      width: 235px;
+      opacity: 0.45;
+      transition: opacity 0.15s ease;
+    }
+    /* On hover: full opacity, follows cursor via JS */
+    #cursorTip.on {
+      opacity: 0.9;
+      width: auto;
+    }
+    .tip-box {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(32,30,28,0.94); border: 1px solid rgba(255,255,255,0.1);
+      padding: 9px 10px 9px 14px; white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+    }
+    .tip-text { flex: 1; }
+    .tip-name {
+      font-family: 'Jost', sans-serif; font-weight: 400; font-size: 0.8rem;
+      letter-spacing: 0.04em; color: #f0ede8; display: block; margin-bottom: 2px;
+    }
+    .tip-sub {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 0.78rem; color: rgba(240,237,232,0.6); display: block;
+    }
+    .tip-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: #f0ede8; flex-shrink: 0;
+    }
+    .tip-icon svg { width: 14px; height: 14px; }
+
+    /* ── PRODUCT MODAL DIALOG ── */
+    #prodDialog {
+      position: fixed; top: 60px; left: 0; right: 0; bottom: 0;
+      z-index: 800; pointer-events: none;
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    #prodDialog.on { pointer-events: all; }
+
+    .d-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.38);
+      opacity: 0; transition: opacity 0.28s;
+    }
+    #prodDialog.on .d-backdrop { opacity: 1; }
+
+    .d-card {
+position: relative;
+    z-index: 1;
+    background: rgba(48, 46, 44, 0.97);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    width: min(960px, 88vw);
+    min-height: 500px;
+    max-height: calc(100vh - 120px);
+    opacity: 0;
+    transform: translateY(14px) scale(0.982);
+    transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    }
+    #prodDialog.on .d-card { opacity: 1; transform: translateY(0) scale(1); }
+
+    .d-img-col {
+      width: 40%; flex-shrink: 0;
+      background: rgba(32,30,28,0.85);
+      display: flex; align-items: center; justify-content: center; padding: 28px;
+    }
+    .d-img-col img { width: 100%; max-height: 350px; object-fit: contain; display: block; }
+    .d-img-ph {
+      width: 100%; aspect-ratio: 4/3;
+      border: 1px dashed rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.2);
+    }
+    .d-img-ph svg { width: 32px; height: 32px; }
+
+    .d-rule {
+      width: 1px; flex-shrink: 0;
+      background-image: repeating-linear-gradient(to bottom,
+        rgba(255,255,255,0.18) 0, rgba(255,255,255,0.18) 5px,
+        transparent 5px, transparent 10px);
+    }
+
+    .d-detail { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .d-header {
+      background: rgba(48,64,82,0.92); padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .d-title {
+      font-family: 'Jost', sans-serif; font-weight: 300;
+      font-size: 0.92rem; letter-spacing: 0.1em; color: #f0ede8;
+    }
+    .d-close {
+      background: none; border: none; cursor: pointer; padding: 4px;
+      display: flex; align-items: center; opacity: 0.5; transition: opacity 0.2s; color: #f0ede8;
+    }
+    .d-close:hover { opacity: 1; }
+    .d-close svg { width: 17px; height: 17px; }
+
+    .d-specs { padding: 18px 22px 22px; display: flex; flex-direction: column; }
+    .spec-row {
+      display: flex; gap: 16px; padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-label {
+      font-family: 'Jost', sans-serif; font-weight: 300;
+      font-size: 0.74rem; color: rgba(240,237,232,0.5); width: 96px; flex-shrink: 0;
+    }
+    .spec-val {
+      font-family: 'Jost', sans-serif; font-weight: 300;
+      font-size: 0.78rem; color: #f0ede8; line-height: 1.6;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media screen and (min-width: 1800px) {
+      .content__inner { margin: -220px 0 0 0; }
+      .logo-img { max-width: 400px; }
+      .tagline, .meta { font-size: 18px; }
+    }
+
+    /* ── 2560px+ WIDESCREEN: scale image to .65 ── */
+    @media screen and (min-width: 2400px) {
+      .photo-zone__img {
+        /* scale: .65; */
+      }
+      /* Wider text block and larger logo for big screen */
+      .content__inner {
+        width: 80%;
+        max-width: 680px;
+        margin: -410px 0 0 0;
+        font-size: 20px;
+      }
+      .form {
+        margin-top: 65px !important;
+      }
+      .logo-img {
+        max-width: 460px;
+        margin-bottom: 28px;
+      }
+      .tagline, .meta {
+        font-size: 19px;
+      }
+      .form__row {
+        max-width: 96% !important;
+        width: 100%;
+      }
+      /* Static hint tooltip repositioned for larger screen */
+      #cursorTip {
+        left: 530px;
+        top: 295px;
+      }
+      /* Caption repositioned — image is smaller/higher on big screen */
+      .photo-caption {
+        bottom: 22px;
+        left: 145px;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .content { flex-direction: column; }
+      .photo-zone { width: 100%; height: 55%; }
+      .content__panel { width: 100%; border-left: none; border-top: 6px solid #bfbfbf; }
+      .content__inner { margin: 0; padding: 28px 24px; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .form__row { flex-direction: column; }
+      .form__input { border-right: 1px solid #9e9b98; border-bottom: none; width: 100%; }
+      .form__btn { border: 1px solid #9e9b98; width: 100%; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="nav__logo"><img src="logo/big-text.png" alt="Scott Olivia"></span>
+    <ul class="nav__links"></ul>
+  </nav>
+
+  <main class="content">
+
+    <!-- LEFT 50%: photo zone with hotspots -->
+    <div class="photo-zone" id="photoZone">
+
+      <img class="photo-zone__img" id="heroImg" src="img/1.png" alt="Scott Olivia showroom" draggable="false">
+      <p class="photo-caption" style="position:absolute; bottom:18px; left:55px; font-family:sans-serif; font-size:0.78rem; color:rgba(255,255,255,0.38); letter-spacing:0.04em; pointer-events:none; z-index:5;">Showroom featuring our current catalog items</p>
+
+      <!--
+        HOTSPOT POSITIONS
+        ─────────────────
+        Image natural size: 2000 × H px (confirm with your file)
+        Image fills photo-zone via object-fit:cover, object-position:center 35%
+
+        With object-fit:cover the browser scales the image so the shorter axis
+        fills the zone. The JS reads the *rendered* image rect via
+        getBoundingClientRect() which already accounts for object-fit,
+        so no manual scale math is needed for Y.
+
+        X coords: left/width as % of photo-zone width (0–100%).
+        These were measured from the screenshot where photo-zone = left 50% of viewport.
+
+        Y coords: data-ny/data-nh in NATURAL IMAGE pixels.
+        JS converts these to screen px using the rendered scale factor.
+      -->
+
+      <!-- Left Sofa -->
+      <div class="hs" data-pid="sofa-left" data-ny="420" data-nh="169" style="left: 15.5%; width: 30.5%; top: 420.069px; height: 118.138px;"></div>
+
+      <!-- Back Console Table -->
+      <div class="hs" data-pid="back-table" data-ny="363" data-nh="188" style="left: 46%; width: 15%; top: 380.224px; height: 131.42px;"></div>
+
+      <!-- Side Table (ellipse) -->
+      <div class="hs hs-ellipse" data-pid="side-table" data-ny="488" data-nh="101" style="left: 3.5%; width: 12%; border-radius: 50%; top: 430.001px; height: 141.207px;"></div>
+
+      <!-- Coffee Table (ellipse) -->
+      <div class="hs hs-ellipse" data-pid="coffee-table" data-ny="562" data-nh="118" style="left: 38%; width: 30%; border-radius: 50%; top: 466.846px; height: 164.974px;"></div>
+
+      <!-- Rug -->
+      <div class="hs" data-pid="rug" data-ny="636" data-nh="202" style="left: 10.5%; width: 85.5%; top: 571.063px; height: 141.207px;"></div>
+
+
+    </div>
+
+    <!-- RIGHT 50%: info panel -->
+    <div class="content__panel">
+      <div class="content__inner">
+        <img class="logo-img" src="logo/big-text.png" alt="Scott Olivia" id="logoImg">
+        <h1 class="logo-wordmark" id="logoWordmark">Scott Olivia</h1>
+
+        <p class="tagline"><span style="font-style:italic;">Scott Olivia</span> is a <span class="special-text-one">furniture design boutique</span> based in Washington DC.</p>
+        <p class="meta">We design custom furniture and soft furnishings inspired by natural elements, contemporary style, and lifetime quality.</p>
+        <p class="meta">We produce in handmade small batches domestically in the United States for <span class="special-text-two">discerning interiors</span>.</p>
+
+        <form class="form" id="earlyAccessForm" novalidate="">
+          <div class="form__row">
+            <input class="form__input" type="email" id="emailInput" name="email" placeholder="name@email.com" autocomplete="email" aria-label="Email address">
+            <button class="form__btn" type="submit">Request Early Access</button>
+          </div>
+          <span class="form__error" id="formError" role="alert">Please enter a valid email address.</span>
+          <span class="form__success" id="formSuccess">You're on the list. We'll be in touch.</span>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Cursor tooltip — shows as static hint on load, follows cursor on hover -->
+  <div id="cursorTip" role="tooltip">
+    <div class="tip-box">
+      <div class="tip-text">
+        <span class="tip-name" id="tipName">Interactive products below</span>
+        <span class="tip-sub">Click to View Product</span>
+      </div>
+      <div class="tip-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product modal -->
+  <div id="prodDialog" role="dialog" aria-modal="true" aria-labelledby="dTitle" class="">
+    <div class="d-backdrop" id="dBackdrop"></div>
+    <div class="d-card">
+      <div class="d-img-col">
+        <img id="dImg" src="rug.png" alt="Versails Area Rug" style="display: block;">
+        <div id="dImgPh" class="d-img-ph" style="display: none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <path d="M21 15l-5-5L5 21"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="d-rule"></div>
+      <div class="d-detail">
+        <div class="d-header">
+          <span class="d-title" id="dTitle">Versails Area Rug</span>
+          <button class="d-close" id="dClose" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="d-specs" id="dSpecs"><div class="spec-row">
+         <span class="spec-label">Type</span>
+         <span class="spec-val">Area Rug</span>
+       </div><div class="spec-row">
+         <span class="spec-label">Composition</span>
+         <span class="spec-val">Hand-knotted New Zealand wool; silk highlights</span>
+       </div><div class="spec-row">
+         <span class="spec-label">Description</span>
+         <span class="spec-val">Geological abstraction — subtle tonal shifts of stone, sand and mineral create a grounding layer beneath any furniture arrangement.</span>
+       </div><div class="spec-row">
+         <span class="spec-label">Sizes</span>
+         <span class="spec-val">8×10 ft · 9×12 ft · Custom</span>
+       </div><div class="spec-row">
+         <span class="spec-label">Availability</span>
+         <span class="spec-val">Limited production run</span>
+       </div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /* ── Logo fallback ── */
+  const logoImg = document.getElementById('logoImg');
+  const logoWordmark = document.getElementById('logoWordmark');
+  logoImg.addEventListener('error', () => {
+    logoImg.style.display = 'none';
+    logoWordmark.style.display = 'block';
+  });
+
+  /* ── Form ── */
+  const form = document.getElementById('earlyAccessForm');
+  const emailInput = document.getElementById('emailInput');
+  const formError  = document.getElementById('formError');
+  const formSuccess= document.getElementById('formSuccess');
+  const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+  function clearState() {
+    emailInput.classList.remove('error');
+    formError.classList.remove('visible');
+    formSuccess.classList.remove('visible');
+  }
+  emailInput.addEventListener('input', clearState);
+  form.addEventListener('submit', e => {
+    e.preventDefault(); clearState();
+    if (!isEmail(emailInput.value)) {
+      emailInput.classList.add('error'); formError.classList.add('visible'); emailInput.focus(); return;
+    }
+    emailInput.value = '';
+    formSuccess.classList.add('visible');
+    setTimeout(() => formSuccess.classList.remove('visible'), 6000);
+  });
+
+  /* ── Product data ── */
+  const PRODUCTS = {
+    'back-table': {
+      name: 'Leaf Console Table', img: 'side-leaf-table-design.jpg',
+      specs: [
+        { l:'Type',         v:'Console / Back Table' },
+        { l:'Composition',  v:'Dark walnut veneer; solid brass hardware' },
+        { l:'Description',  v:'Sits behind a sofa or against a wall. Lower shelf for refined storage; tapered legs keep it grounded yet airy.' },
+        { l:'Sizes',        v:'48″ × 14″ × 30″ H' },
+        { l:'Availability', v:'In stock — limited quantity' },
+      ]
+    },
+    'coffee-table': {
+      name: 'Basin Coffee Table', img: 'Picture7.png',
+      specs: [
+        { l:'Type',         v:'Coffee Table' },
+        { l:'Composition',  v:'100% American Walnut; Tempered Glass' },
+        { l:'Description',  v:'A sanctuary centerpiece for dignified living rooms. Dark walnut frame brings warmth and presence to any contemporary interior.' },
+        { l:'Sizes',        v:'36″ round · 42″ round' },
+        { l:'Availability', v:'Limited supply batch' },
+      ]
+    },
+    'sofa-left': {
+      name: 'Meridian Sofa', img: null,
+      specs: [
+        { l:'Type',         v:'Sofa' },
+        { l:'Composition',  v:'Solid white oak frame; Belgian linen upholstery' },
+        { l:'Description',  v:'Generous seating with a low, linear profile. Deep cushioning and tight-back construction deliver lasting comfort without sacrificing silhouette.' },
+        { l:'Sizes',        v:'84″ · 96″ · Custom sectional' },
+        { l:'Availability', v:'Made to order — 12–14 weeks' },
+      ]
+    },
+    'sofa-right': {
+      name: 'Meridian Sofa', img: null,
+      specs: [
+        { l:'Type',         v:'Sofa' },
+        { l:'Composition',  v:'Solid white oak frame; Belgian linen upholstery' },
+        { l:'Description',  v:'Generous seating with a low, linear profile. Deep cushioning and tight-back construction deliver lasting comfort without sacrificing silhouette.' },
+        { l:'Sizes',        v:'84″ · 96″ · Custom sectional' },
+        { l:'Availability', v:'Made to order — 12–14 weeks' },
+      ]
+    },
+    'side-table': {
+      name: 'Basin Side Table', img: null,
+      specs: [
+        { l:'Type',         v:'Side Table' },
+        { l:'Composition',  v:'100% American Walnut; Tempered Glass' },
+        { l:'Description',  v:'Pairs effortlessly beside a sofa or chair. Lower shelf offers practical display space while the glass top keeps sight lines open.' },
+        { l:'Sizes',        v:'22″ diameter · 24″ H' },
+        { l:'Availability', v:'Made to order — 8–10 weeks' },
+      ]
+    },
+    'rug': {
+      name: 'Versails Area Rug', img: 'rug.png',
+      specs: [
+        { l:'Type',         v:'Area Rug' },
+        { l:'Composition',  v:'Hand-knotted New Zealand wool; silk highlights' },
+        { l:'Description',  v:'Geological abstraction — subtle tonal shifts of stone, sand and mineral create a grounding layer beneath any furniture arrangement.' },
+        { l:'Sizes',        v:'8×10 ft · 9×12 ft · Custom' },
+        { l:'Availability', v:'Limited production run' },
+      ]
+    },
+  };
+
+  /* ════════════════════════════════════════════════════════
+     HOTSPOT Y-POSITIONING
+
+     The image uses object-fit:cover inside .photo-zone.
+     getBoundingClientRect() on the <img> element returns the
+     element's layout box — NOT the visible content rect when
+     object-fit is applied.
+
+     For object-fit:cover we must calculate:
+       • The cover scale factor (which axis fills first)
+       • The centering offset from object-position
+
+     Then convert natural image coords → screen coords.
+  ════════════════════════════════════════════════════════ */
+  const IMG_NAT_W = 2000;
+  const IMG_NAT_H = 1046;
+
+  const heroImg   = document.getElementById('heroImg');
+  const photoZone = document.getElementById('photoZone');
+  const hotspots  = document.querySelectorAll('.hs');
+
+  let pastTip = document.getElementById('cursorTip');
+  let tipStatic = {};
+  tipStatic.left  = window.getComputedStyle(pastTip).left;
+  tipStatic.top   = window.getComputedStyle(pastTip).top;
+
+  function getCssScale() {
+    // Read the actual computed CSS scale property at runtime.
+    // This handles both .85 (default) and .65 (2560px+ media query) automatically.
+    const raw = getComputedStyle(heroImg).scale;
+    // 'scale' returns e.g. "0.85" or "none"
+    const parsed = parseFloat(raw);
+    return isNaN(parsed) ? 0.85 : parsed;
+  }
+
+  function positionHotspots() {
+    const pzRect = photoZone.getBoundingClientRect();
+    const zoneW  = pzRect.width;
+    const zoneH  = pzRect.height;
+    if (!zoneW || !zoneH) return;
+
+    const k = getCssScale(); // 0.85 on normal screens, 0.65 on 2560px+
+
+    const coverScale = Math.max(zoneW / IMG_NAT_W, zoneH / IMG_NAT_H);
+    const rendW = IMG_NAT_W * coverScale;
+    const rendH = IMG_NAT_H * coverScale;
+    const offX  = (zoneW - rendW) * 0.08;
+    const offY  = (zoneH - rendH) * 0.35;
+
+    const cx = zoneW / 2;
+    const cy = zoneH / 2;
+    const effScale = coverScale * k;
+
+    // visOriginY: where nat y=0 maps to in pz-relative coords
+    // +150 is empirical calibration for scale:.85; scaled proportionally for other values
+    const calibration = 90 * (k / 0.85);
+    const visOriginY = offY * k + cy * (1 - k) + calibration + 50;
+
+    hotspots.forEach(el => {
+      const natY      = parseFloat(el.dataset.ny);
+      const natH      = parseFloat(el.dataset.nh);
+      const isEllipse = el.classList.contains('hs-ellipse');
+
+      const topNat   = isEllipse ? natY - natH : natY;
+      const topPx    = visOriginY + topNat * effScale;
+      const heightPx = natH * effScale * (isEllipse ? 2 : 1);
+
+      el.style.top    = topPx + 'px';
+      el.style.height = heightPx + 'px';
+    });
+  }
+
+  if (heroImg.complete) positionHotspots();
+  else heroImg.addEventListener('load', positionHotspots);
+  window.addEventListener('load', positionHotspots);
+
+  let rTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(rTimer); rTimer = setTimeout(positionHotspots, 40);
+  });
+
+  /* ── Cursor tooltip ── */
+  const tip     = document.getElementById('cursorTip');
+  const tipName = document.getElementById('tipName');
+
+  // Returns the correct static hint position from current CSS (respects media queries)
+  function getHintPos() {
+    const cs = getComputedStyle(tip);
+    return { left: cs.left, top: cs.top, width: cs.width };
+  }
+
+  function resetTip() {
+    tip.classList.remove('on');
+    const pos = getHintPos();
+    tip.style.opacity = ".45 !important";
+    tip.style.left  = tipStatic.left;
+    tip.style.top   = tipStatic.top;
+    tip.style.width = 235;
+    tipName.textContent = 'Interactive products below';
+  }
+
+  // Always track cursor position — even while dialog is open
+  let lastMouseX = 275, lastMouseY = 175;
+  document.addEventListener('mousemove', e => {
+    tip.style.opacity = ".90 !important";
+
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+    if (tip.classList.contains('on')) {
+      tip.style.left = (e.clientX + 18) + 'px';
+      tip.style.top  = (e.clientY - 10) + 'px';
+    }
+  });
+
+  hotspots.forEach(el => {
+    const p = PRODUCTS[el.dataset.pid];
+    el.addEventListener('mouseenter', e => {
+      tipName.textContent = p.name;
+      tip.style.left  = (e.clientX + 18) + 'px';
+      tip.style.top   = (e.clientY - 10) + 'px';
+      tip.style.width = 'auto';
+      tip.classList.add('on');
+    });
+    el.addEventListener('mouseleave', () => resetTip());
+    el.addEventListener('click', () => openDialog(el.dataset.pid));
+  });
+
+  /* ── Modal dialog ── */
+  const dialog    = document.getElementById('prodDialog');
+  const dTitle    = document.getElementById('dTitle');
+  const dSpecs    = document.getElementById('dSpecs');
+  const dImg      = document.getElementById('dImg');
+  const dImgPh    = document.getElementById('dImgPh');
+  const dClose    = document.getElementById('dClose');
+  const dBackdrop = document.getElementById('dBackdrop');
+
+  function openDialog(pid) {
+    const p = PRODUCTS[pid];
+    dTitle.textContent = p.name;
+    if (p.img) {
+      dImg.src = p.img; dImg.alt = p.name;
+      dImg.style.display = 'block'; dImgPh.style.display = 'none';
+    } else {
+      dImg.style.display = 'none'; dImgPh.style.display = 'flex';
+    }
+    dSpecs.innerHTML = p.specs.map(s =>
+      `<div class="spec-row">
+         <span class="spec-label">${s.l}</span>
+         <span class="spec-val">${s.v}</span>
+       </div>`
+    ).join('');
+    dialog.classList.add('on');
+    tip.classList.remove('on');
+    tip.style.opacity = '0';
+    tip.style.pointerEvents = 'none';
+  }
+
+  function closeDialog() {
+    dialog.classList.remove('on');
+    tip.style.opacity = '';
+    tip.style.pointerEvents = '';
+
+    // Check if cursor is still over a hotspot after dialog closes
+    // Use elementFromPoint with last known cursor position
+    const el = document.elementFromPoint(lastMouseX, lastMouseY);
+    const hs = el && el.closest('.hs');
+    if (hs) {
+      const p = PRODUCTS[hs.dataset.pid];
+      if (p) {
+        tipName.textContent = p.name;
+        tip.style.left  = (lastMouseX + 18) + 'px';
+        tip.style.top   = (lastMouseY - 10) + 'px';
+        tip.style.width = 'auto';
+        tip.classList.add('on');
+      }
+    } else {
+      // Cursor not over a hotspot — restore static hint
+      resetTip();
+    }
+  }
+  dClose.addEventListener('click', closeDialog);
+  dBackdrop.addEventListener('click', closeDialog);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDialog(); });
+  </script>
+
+
+</body></html>
