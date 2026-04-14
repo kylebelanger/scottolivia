@@ -58,24 +58,30 @@
     .photo-zone {
       width: 50%;
       flex-shrink: 0;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
       overflow: hidden;
-      /* background: #111; */
+    }
+
+    .photo-frame {
+      position: relative;
+      flex: 1 1 auto;
+      overflow: hidden;
+      min-height: 220px;
     }
 
     /*
-      The image fills the photo zone with object-fit:cover.
+      The image fills the photo frame with object-fit:cover.
       Because it is position:absolute inset:0, getBoundingClientRect()
-      returns the same rect as the photo-zone element itself.
-      Hotspot Y uses the photo-zone rect directly — no +offset needed.
-      We use object-position to crop the ceiling and show the furniture.
+      returns the same rect as the photo-frame element itself.
+      Hotspot Y uses the photo-frame rect directly.
     */
     .photo-zone__img {
     position: absolute;
     inset: 0;
     width: 100%;
-    /* height: 100%; */
-    height: auto;
+    height: 100%;
     object-fit: cover;
     object-position: 8% 35%;
     display: block;
@@ -84,11 +90,99 @@
     pointer-events: none;
 
     scale: 1;
-    margin: 150px 0 0 0;
 
     /* scale: .85;*/
     mask-image: linear-gradient(transparent 0%, black 20%);
     /* mask-image: radial-gradient(circle, black 78%, rgba(0, 0, 0, 0) 95%); */
+    }
+
+    .photo-zone__img--next {
+      z-index: 2;
+      opacity: 0;
+      transform: translateX(10px);
+    }
+
+    @keyframes slideFadeIn {
+      from { opacity: 0; transform: translateX(18px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideFadeOut {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(-18px); }
+    }
+
+    .photo-zone__img.animate-in {
+      animation: slideFadeIn 0.9s ease forwards;
+    }
+    .photo-zone__img.animate-out {
+      animation: slideFadeOut 0.9s ease forwards;
+    }
+
+    .photo-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px 22px;
+      background: rgba(0, 0, 0, 0.04);
+      z-index: 5;
+    }
+
+    .photo-caption {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      margin: 0;
+      font-family: sans-serif;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.04em;
+      pointer-events: none;
+      z-index: 1;
+      max-width: 100%;
+    }
+
+    .slide-controls {
+      position: relative;
+      right: auto;
+      bottom: auto;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      z-index: 1;
+      pointer-events: auto;
+      opacity: 1;
+    }
+    .slide-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.18);
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+      padding: 0;
+    }
+    .slide-dot:hover {
+      transform: scale(1.1);
+    }
+    .slide-dot.active {
+      background: rgba(255,255,255,0.95);
+      border-color: rgba(255,255,255,0.95);
+    }
+
+    @media (max-width: 900px) {
+      .photo-frame {
+        min-height: 200px;
+      }
+      .photo-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 16px 16px;
+      }
+      .slide-controls {
+        margin-top: 10px;
+      }
     }
 
     /* ── RIGHT: info panel — exactly 50% ── */
@@ -322,6 +416,13 @@ position: relative;
       .photo-zone__img {
         /* scale: .65; */
       }
+      .d-card {
+            width: min(1260px, 88vw);
+            min-height: 650px;
+      }
+      .d-img-col img {
+        max-height: 75%;
+      }
       /* Wider text block and larger logo for big screen */
       .content__inner {
         width: 80%;
@@ -348,10 +449,10 @@ position: relative;
         left: 530px;
         top: 195px;
       }
-      /* Caption repositioned — image is smaller/higher on big screen */
+      /* Caption repositioned for bigger screens while keeping bottom-left alignment */
       .photo-caption {
         bottom: 22px;
-        left: 145px;
+        left: 22px;
         font-size: 0.85rem;
       }
     }
@@ -387,11 +488,11 @@ position: relative;
 
     <!-- LEFT 50%: photo zone with hotspots -->
     <div class="photo-zone" id="photoZone">
+      <div class="photo-frame" id="photoFrame">
+        <img class="photo-zone__img" id="heroImg" src="img/1.png" alt="Scott Olivia showroom" draggable="false">
+        <img class="photo-zone__img photo-zone__img--next" id="heroImgNext" src="img/2.png" alt="Scott Olivia showroom" draggable="false" aria-hidden="true">
 
-      <img class="photo-zone__img" id="heroImg" src="img/1-b.png" alt="Scott Olivia showroom" draggable="false">
-      <p class="photo-caption" style="position:absolute; bottom:18px; left:55px; font-family:sans-serif; font-size:0.78rem; color:rgba(255,255,255,0.38); letter-spacing:0.04em; pointer-events:none; z-index:5;">Showroom featuring our current catalog items</p>
-
-      <!--
+        <!--
         HOTSPOT POSITIONS
         ─────────────────
         Image natural size: 2000 × H px (confirm with your file)
@@ -424,7 +525,15 @@ position: relative;
       <!-- Rug -->
       <div class="hs" data-pid="rug" data-ny="636" data-nh="202" style="left: 10.5%; width: 85.5%; top: 571.063px; height: 141.207px;"></div>
 
-
+      </div>
+      <div class="photo-footer">
+        <p class="photo-caption">Showroom featuring our current catalog items</p>
+        <div class="slide-controls" id="slideControls" aria-label="Slide navigation">
+          <button class="slide-dot active" type="button" data-index="0" aria-label="Slide 1"></button>
+          <button class="slide-dot" type="button" data-index="1" aria-label="Slide 2"></button>
+          <button class="slide-dot" type="button" data-index="2" aria-label="Slide 3"></button>
+        </div>
+      </div>
     </div>
 
     <!-- RIGHT 50%: info panel -->
@@ -498,17 +607,24 @@ position: relative;
        </div><div class="spec-row">
          <span class="spec-label">Description</span>
          <span class="spec-val">Geological abstraction — subtle tonal shifts of stone, sand and mineral create a grounding layer beneath any furniture arrangement.</span>
-       </div><div class="spec-row">
+       </div>
+       <div class="spec-row">
          <span class="spec-label">Sizes</span>
-         <span class="spec-val">8×10 ft · 9×12 ft · Custom</span>
-       </div><div class="spec-row">
+         <span class="spec-val">6x9 ft · 9×12 ft · Custom</span>
+       </div>
+              <div class="spec-row">
+         <span class="spec-label">Price</span>
+         <span class="spec-val">Starting at $4,495</span>
+       </div>
+       <div class="spec-row">
          <span class="spec-label">Availability</span>
          <span class="spec-val">Limited production run</span>
        </div></div>
       </div>
     </div>
   </div>
-
+         <!-- <span class="spec-label">Price</span>
+         <span class="spec-val">Starting at $4,495</span> -->
   <script>
   /* ── Logo fallback ── */
   const logoImg = document.getElementById('logoImg');
@@ -539,6 +655,86 @@ position: relative;
     formSuccess.classList.add('visible');
     setTimeout(() => formSuccess.classList.remove('visible'), 6000);
   });
+
+  /* ── Slide show ── */
+  const slides = ['img/1.png', 'img/2.png', 'img/3.png'];
+  const slideDelay = 5000;
+  const photoZoneEl = document.getElementById('photoZone');
+  const heroImgEl = document.getElementById('heroImg');
+  const heroImgNextEl = document.getElementById('heroImgNext');
+  const slideDots = document.querySelectorAll('.slide-dot');
+
+  let currentSlide = 0;
+  let slideTimer = null;
+  let isPaused = false;
+  let isAnimating = false;
+
+  function updateSlideDots() {
+    slideDots.forEach(dot => dot.classList.toggle('active', Number(dot.dataset.index) === currentSlide));
+  }
+
+  function scheduleNextSlide() {
+    clearTimeout(slideTimer);
+    if (isPaused) return;
+    slideTimer = setTimeout(() => changeSlide((currentSlide + 1) % slides.length), slideDelay);
+  }
+
+  function changeSlide(nextIndex) {
+    if (nextIndex === currentSlide || isAnimating) return;
+    const outgoingImg = heroImgEl;
+    const incomingImg = heroImgNextEl;
+
+    incomingImg.classList.remove('animate-in', 'animate-out');
+    outgoingImg.classList.remove('animate-in', 'animate-out');
+
+    function beginTransition() {
+      incomingImg.removeEventListener('load', beginTransition);
+      isAnimating = true;
+      requestAnimationFrame(() => {
+        incomingImg.classList.add('animate-in');
+        outgoingImg.classList.add('animate-out');
+      });
+    }
+
+    incomingImg.addEventListener('load', beginTransition);
+    incomingImg.src = slides[nextIndex];
+
+    incomingImg.addEventListener('animationend', function handler() {
+      incomingImg.removeEventListener('animationend', handler);
+      outgoingImg.src = slides[nextIndex];
+      outgoingImg.classList.remove('animate-out');
+      incomingImg.classList.remove('animate-in');
+      currentSlide = nextIndex;
+      isAnimating = false;
+      updateSlideDots();
+      scheduleNextSlide();
+    });
+  }
+
+  slideDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const targetIndex = Number(dot.dataset.index);
+      if (targetIndex === currentSlide) return;
+      changeSlide(targetIndex);
+    });
+  });
+
+  function pauseSlides() {
+    isPaused = true;
+    clearTimeout(slideTimer);
+  }
+
+  function resumeSlides() {
+    if (!isPaused) return;
+    isPaused = false;
+    scheduleNextSlide();
+  }
+
+  photoZoneEl.addEventListener('mouseenter', pauseSlides);
+  photoZoneEl.addEventListener('mouseleave', resumeSlides);
+
+  updateSlideDots();
+  scheduleNextSlide();
 
   /* ── Product data ── */
   const PRODUCTS = {
@@ -599,6 +795,7 @@ position: relative;
         { l:'Composition',  v:'Hand-knotted New Zealand wool; silk highlights' },
         { l:'Description',  v:'Geological abstraction — subtle tonal shifts of stone, sand and mineral create a grounding layer beneath any furniture arrangement.' },
         { l:'Sizes',        v:'8×10 ft · 9×12 ft · Custom' },
+        // { l:'Price',        v:'Starting at $4,495' },
         { l:'Availability', v:'Limited production run' },
       ]
     },
@@ -622,7 +819,7 @@ position: relative;
   const IMG_NAT_H = 1046;
 
   const heroImg   = document.getElementById('heroImg');
-  const photoZone = document.getElementById('photoZone');
+  const photoZone = document.getElementById('photoFrame');
   const hotspots  = document.querySelectorAll('.hs');
 
   let pastTip = document.getElementById('cursorTip');
