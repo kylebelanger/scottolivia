@@ -712,7 +712,7 @@ position: relative;
 
   /* ── Slide show ── */
   const slides = ['img/1.png', 'img/2.png', 'img/3.png'];
-  const slideDelay = 500000000;
+  const slideDelay = 5000;
   const photoZoneEl = document.getElementById('photoZone');
   const heroImgEl = document.getElementById('heroImg');
   const heroImgNextEl = document.getElementById('heroImgNext');
@@ -720,7 +720,7 @@ position: relative;
 
   let currentSlide = 0;
   let slideTimer = null;
-  let isPaused = true;
+  let isPaused = false;
   let isAnimating = false;
 
   function updateSlideDots() {
