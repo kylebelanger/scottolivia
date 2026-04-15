@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Scott Olivia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      background: #f5f3f0;
+      color: #1c1c1c;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 60px; padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      background-color: rgba(255,255,255,0.97);
+      border-bottom: 2px solid #242424;
+    }
+    .nav__logo { display: flex; align-items: center; }
+    .nav__logo a { display: flex; align-items: center; text-decoration: none; }
+    .nav__logo img { width: 130px; filter: brightness(0); opacity: 0.88; }
+    .nav__links { display: flex; align-items: center; gap: 16px; list-style: none; font-family: sans-serif; color: #626262; }
+    .nav-menu {
+      display: flex; align-items: center; gap: 30px;
+      overflow: hidden; max-width: 0; opacity: 0;
+      transition: max-width 0.38s ease, opacity 0.38s ease;
+      white-space: nowrap;
+    }
+    .nav-menu.open { max-width: 520px; opacity: 1; }
+    .nav-menu a {
+      color: #808080; text-decoration: none;
+      opacity: 0; transition: opacity 0.18s ease 0.1s;
+      font-size: 15px;
+    }
+    .nav-menu a:hover { color: #1c1c1c; }
+    .nav-menu.open a { opacity: 1; }
+    .menu-toggle {
+      border: none; background: none; color: #808080;
+      cursor: pointer; display: inline-flex; align-items: center;
+    }
+    .menu-toggle:focus-visible { outline: 1px solid #242424; outline-offset: 3px; }
+    .menu-text-open { margin: 0 10px 0 0; display: inline-block; float: left; font-size: 16px; }
+    .menu-toggle .hamburger {
+      width: 18px; height: 9px; position: relative;
+      display: inline-block; color: #a0a0a0; margin: 2px 15px 0 0;
+    }
+    .menu-toggle .hamburger::before,
+    .menu-toggle .hamburger::after {
+      content: ''; position: absolute; left: 0; width: 100%; height: 2px;
+      background: currentColor; transition: transform 0.25s ease, top 0.25s ease, left 0.25s ease;
+      transform-origin: center;
+    }
+    .menu-toggle .hamburger::before { top: 0; }
+    .menu-toggle .hamburger::after { bottom: 0; }
+    .menu-toggle.open .hamburger::before { top: 50%; left: 2px; transform: translateY(-50%) rotate(90deg); }
+    .menu-toggle.open .hamburger::after { top: 50%; left: 10px; transform: translateY(-50%) rotate(90deg); }
+
+    /* ── PAGE CONTENT ── */
+    .page { padding-top: 60px; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 40vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgb(120 120 120 / 95%);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(165deg, rgba(44,66,85,0.15) 0%, rgba(85,71,44,0.1) 100%);
+      z-index: 1;
+    }
+    .hero__content {
+      position: relative; z-index: 2;
+      text-align: center;
+      max-width: 600px;
+      padding: 64px 32px;
+      animation: fadeUp 1.2s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-style: italic;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: #f0ede8;
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+    .hero__subtitle {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+      color: rgba(240,237,232,0.65);
+      line-height: 1.8;
+    }
+
+    /* ── CONTACT LAYOUT ── */
+    .contact-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 40px 100px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 72px;
+      animation: fadeUp 0.9s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* ── LEFT: info ── */
+    .contact-info__label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 18px;
+    }
+    .contact-info__heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-style: italic;
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      line-height: 1.25;
+      color: #1a1a1a;
+      margin-bottom: 28px;
+    }
+    .contact-info__text {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 36px;
+    }
+    .contact-detail {
+      margin-bottom: 22px;
+    }
+    .contact-detail__label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+    .contact-detail__value {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.95rem;
+      color: #1c1c1c;
+      line-height: 1.6;
+    }
+    .contact-detail__value a {
+      color: #1c1c1c;
+      text-decoration: none;
+      border-bottom: 1px solid #c8c4be;
+      transition: border-color 0.2s;
+    }
+    .contact-detail__value a:hover {
+      border-color: #1c1c1c;
+    }
+
+    /* ── RIGHT: form ── */
+    .contact-form__heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-style: italic;
+      font-size: 1.4rem;
+      color: #1a1a1a;
+      margin-bottom: 28px;
+    }
+    .form-group {
+      margin-bottom: 22px;
+    }
+    .form-group label {
+      display: block;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.95rem;
+      color: #1c1c1c;
+      background: #fff;
+      border: 1px solid #c8c4be;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: #555;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #bbb;
+    }
+    .form-group input.error,
+    .form-group textarea.error {
+      border-color: #b03020;
+    }
+    .form-group textarea {
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-submit {
+      display: inline-block;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #1c1c1c;
+      background: #fff;
+      border: 1px solid #9e9b98;
+      padding: 14px 36px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      margin-top: 8px;
+    }
+    .form-submit:hover { background: #f2f0ee; border-color: #777; }
+    .form-submit:active { background: #e8e5e2; }
+
+    .form-success {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: #2a6e4a;
+      display: none;
+      margin-top: 16px;
+    }
+    .form-success.visible { display: block; }
+    .form-error {
+      font-size: 0.8rem;
+      color: #b03020;
+      display: none;
+      margin-top: 8px;
+    }
+    .form-error.visible { display: block; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: #1a1a1a;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .footer__logo {
+      width: 110px;
+      filter: brightness(0) invert(1);
+      opacity: 0.35;
+      margin-bottom: 18px;
+    }
+    .footer__text {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.78rem;
+      color: rgba(240,237,232,0.3);
+      letter-spacing: 0.04em;
+    }
+    .footer__links {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .footer__links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(240,237,232,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: rgba(240,237,232,0.6); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .contact-wrap {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 56px 28px 72px;
+      }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .hero { min-height: 32vh; }
+      .hero__content { padding: 48px 24px; }
+      .contact-wrap { padding: 40px 20px 56px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="nav__logo"><a href="big-screen.html"><img src="logo/big-text.png" alt="Scott Olivia"></a></span>
+    <ul class="nav__links">
+      <li>
+        <div class="nav-menu" id="mainMenu" aria-expanded="false">
+          <a href="about.html">About</a>
+          <a href="about.html#materials">Materials</a>
+          <a href="about.html#design-philosophy">Design Philosophy</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </li>
+      <li>
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainMenu">
+          <span class="hamburger"></span>
+          <span class="menu-text-open">Menu</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="page">
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero">
+      <div class="hero__content">
+        <h1 class="hero__title">We'd love to hear from you</h1>
+        <p class="hero__subtitle">Whether you're envisioning a custom piece, exploring our collections, or simply curious about our process — reach out. Every great room begins with a conversation.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════ CONTACT ═══════════ -->
+    <div class="contact-wrap" id="contact">
+
+      <!-- Left: Info -->
+      <div class="contact-info">
+        <span class="contact-info__label">Get in Touch</span>
+        <h2 class="contact-info__heading">Let's create something<br>worth keeping</h2>
+        <p class="contact-info__text">We welcome inquiries about custom commissions, trade partnerships, and our current collections. Our studio responds to every message personally — typically within one to two business days.</p>
+
+        <div class="contact-detail">
+          <p class="contact-detail__label">Email</p>
+          <p class="contact-detail__value"><a href="mailto:hello@scottolivia.com">hello@scottolivia.com</a></p>
+        </div>
+        <div class="contact-detail">
+          <p class="contact-detail__label">Studio</p>
+          <p class="contact-detail__value">Washington, D.C.</p>
+        </div>
+        <div class="contact-detail">
+          <p class="contact-detail__label">Showroom Visits</p>
+          <p class="contact-detail__value">By appointment only</p>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="contact-form">
+        <h3 class="contact-form__heading">Send us a note</h3>
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" placeholder="First name" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Last name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="name@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <select id="subject" name="subject">
+              <option value="" disabled selected>Select a topic</option>
+              <option value="custom">Custom Commission</option>
+              <option value="collections">Current Collections</option>
+              <option value="trade">Trade &amp; Design Professionals</option>
+              <option value="general">General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about your project or question..." required></textarea>
+          </div>
+          <button class="form-submit" type="submit">Send Message</button>
+          <p class="form-error" id="formError">Please fill in all required fields with valid information.</p>
+          <p class="form-success" id="formSuccess">Thank you — your message has been received. We'll be in touch soon.</p>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer class="site-footer">
+      <img class="footer__logo" src="logo/big-text.png" alt="Scott Olivia">
+      <p class="footer__text">&copy; 2026 Scott Olivia. All rights reserved.</p>
+      <ul class="footer__links">
+        <li><a href="big-screen.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </footer>
+
+  </div>
+
+  <script>
+  /* ── Menu toggle ── */
+  const menuToggle = document.getElementById('menuToggle');
+  const menuNav = document.getElementById('mainMenu');
+  const menuLinks = menuNav.querySelectorAll('a');
+
+  function toggleMenu() {
+    const isOpen = !menuNav.classList.contains('open');
+    menuNav.classList.toggle('open', isOpen);
+    menuToggle.classList.toggle('open', isOpen);
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuNav.setAttribute('aria-expanded', String(isOpen));
+  }
+  function closeMenu() {
+    menuNav.classList.remove('open');
+    menuToggle.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuNav.setAttribute('aria-expanded', 'false');
+  }
+  menuToggle.addEventListener('click', toggleMenu);
+  menuLinks.forEach(link => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menuNav.classList.contains('open')) closeMenu();
+  });
+
+  /* ── Contact form ── */
+  const form = document.getElementById('contactForm');
+  const formError = document.getElementById('formError');
+  const formSuccess = document.getElementById('formSuccess');
+  const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+
+  function clearFormState() {
+    form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+    formError.classList.remove('visible');
+    formSuccess.classList.remove('visible');
+  }
+
+  form.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', clearFormState);
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    clearFormState();
+
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const email = document.getElementById('email');
+    const message = document.getElementById('message');
+    let valid = true;
+
+    if (!firstName.value.trim()) { firstName.classList.add('error'); valid = false; }
+    if (!lastName.value.trim()) { lastName.classList.add('error'); valid = false; }
+    if (!isEmail(email.value)) { email.classList.add('error'); valid = false; }
+    if (!message.value.trim()) { message.classList.add('error'); valid = false; }
+
+    if (!valid) {
+      formError.classList.add('visible');
+      return;
+    }
+
+    // Success state (no backend yet)
+    form.reset();
+    formSuccess.classList.add('visible');
+    setTimeout(() => formSuccess.classList.remove('visible'), 8000);
+  });
+  </script>
+
+</body>
+</html>
