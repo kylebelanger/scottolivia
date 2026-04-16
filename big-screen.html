@@ -68,7 +68,7 @@
     .mobile-scroll-hint {
       display: none;
       position: absolute;
-      bottom: 28px; left: 50%;
+      bottom: 28px; left: 32%;
       transform: translateX(-50%);
       z-index: 25;
       flex-direction: column;
@@ -619,7 +619,7 @@ position: relative;
       .mobile-menu-btn { display: flex; align-items: center; }
       .mobile-overlay { display: flex; }
       .content { top: 0; }
-      .photo-zone { height: calc(100vh - 54px); height: calc(100dvh - 54px); }
+      .photo-zone { height: calc(100vh); }
       .content__panel { min-height: calc(100vh - 54px); min-height: calc(100dvh - 54px); }
       .hero__content { padding: 48px 24px 56px; }
       .hero__logo { width: 200px; }
@@ -629,13 +629,21 @@ position: relative;
       .form__row { flex-direction: column; }
       .form__input { border-right: 1px solid #9e9b98; border-bottom: none; width: 100%; }
       .form__btn { border: 1px solid #9e9b98; width: 100%; margin: 0; }
-      .slide-controls { gap: 6px; bottom: 72px; }
+      .slide-controls { gap: 6px;         bottom: 125px;
+        left: 47%; }
       .slide-dot { width: 8px; height: 8px; }
     }
     @media (max-width: 380px) {
-      .hero__logo { width: 160px; }
-      .hero__title { font-size: 19px; }
-      .hero__subtitle { font-size: 13.5px; }
+      .hero__logo {         width: 345px;
+        margin: 0; }
+      .hero__title { font-size: 30px; }
+      .hero__subtitle { font-size: 18px; }
+      .form__row {
+            height: 95px;
+      }
+      .form__btn {
+        margin: 5px 0;
+      }
     }
   </style>
 </head>
@@ -859,16 +867,12 @@ position: relative;
   /* ── Slide show ── */
   const desktopSlides = ['img/1.png', 'img/2.png', 'img/3.png'];
 
-  /* Mobile slides: same images but with different object-position crops
-     to showcase individual furniture pieces at full-screen size */
+  /* Mobile slides: dedicated cropped photos for each product spotlight */
   const mobileSlides = [
-    { src: 'img/1.png', pos: 'center center', caption: 'Living room overview' },
-    { src: 'img/1.png', pos: '15% 55%',       caption: 'Meridian Sofa — Belgian linen' },
-    { src: 'img/1.png', pos: '50% 40%',       caption: 'Leaf Console Table — dark walnut' },
-    { src: 'img/1.png', pos: '40% 70%',       caption: 'Basin Coffee Table — American walnut' },
-    { src: 'img/2.png', pos: 'center 40%',    caption: 'Leaf Console Table — alternate view' },
-    { src: 'img/3.png', pos: 'center center',  caption: 'Versails Area Rug — hand-knotted wool' },
-    { src: 'img/3.png', pos: '30% 60%',       caption: 'Rug & furniture detail' },
+    { src: 'img/mobile/1.png' },
+    { src: 'img/mobile/2.png' },
+    { src: 'img/mobile/3.png' },
+    { src: 'img/mobile/4.png' },
   ];
 
   function isMobile() { return window.innerWidth <= 900; }
@@ -912,12 +916,9 @@ position: relative;
     );
   }
 
-  function applyMobilePosition(imgEl, slideIndex) {
-    if (isMobile()) {
-      imgEl.style.objectPosition = mobileSlides[slideIndex].pos;
-    } else {
-      imgEl.style.objectPosition = '';
-    }
+  function getSlideSrc(activeSlides, index) {
+    const s = activeSlides[index];
+    return typeof s === 'string' ? s : s.src;
   }
 
   function scheduleNextSlide() {
@@ -932,15 +933,13 @@ position: relative;
     if (nextIndex === currentSlide || isAnimating) return;
     const outgoingImg = heroImgEl;
     const incomingImg = heroImgNextEl;
-    const mobile = isMobile();
-    const nextSrc = mobile ? activeSlides[nextIndex].src : activeSlides[nextIndex];
+    const nextSrc = getSlideSrc(activeSlides, nextIndex);
 
     incomingImg.classList.remove('animate-in', 'animate-out');
     outgoingImg.classList.remove('animate-in', 'animate-out');
 
     function beginTransition() {
       incomingImg.removeEventListener('load', beginTransition);
-      if (mobile) applyMobilePosition(incomingImg, nextIndex);
       isAnimating = true;
       requestAnimationFrame(() => {
         incomingImg.classList.add('animate-in');
@@ -948,20 +947,12 @@ position: relative;
       });
     }
 
-    /* If same src (just different crop), force the transition immediately */
-    if (incomingImg.src.endsWith(nextSrc) || incomingImg.getAttribute('src') === nextSrc) {
-      incomingImg.src = nextSrc;
-      if (mobile) applyMobilePosition(incomingImg, nextIndex);
-      beginTransition();
-    } else {
-      incomingImg.addEventListener('load', beginTransition);
-      incomingImg.src = nextSrc;
-    }
+    incomingImg.addEventListener('load', beginTransition);
+    incomingImg.src = nextSrc;
 
     incomingImg.addEventListener('animationend', function handler() {
       incomingImg.removeEventListener('animationend', handler);
       outgoingImg.src = nextSrc;
-      if (mobile) applyMobilePosition(outgoingImg, nextIndex);
       outgoingImg.classList.remove('animate-out');
       incomingImg.classList.remove('animate-in');
       currentSlide = nextIndex;
@@ -1000,19 +991,15 @@ position: relative;
     }
   }, { passive: true });
 
-  /* Initialize slides — apply mobile positions if needed */
+  /* Initialize slides */
   function initSlides() {
     currentSlide = 0;
     isAnimating = false;
     clearTimeout(slideTimer);
     buildDots();
-    if (isMobile()) {
-      applyMobilePosition(heroImgEl, 0);
-      heroImgEl.src = mobileSlides[0].src;
-    } else {
-      heroImgEl.style.objectPosition = '';
-      heroImgEl.src = desktopSlides[0];
-    }
+    const activeSlides = getActiveSlides();
+    heroImgEl.src = getSlideSrc(activeSlides, 0);
+    if (!isMobile()) heroImgEl.style.objectPosition = '';
     updateSlideDots();
     scheduleNextSlide();
   }
