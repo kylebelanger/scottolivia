@@ -8,7 +8,7 @@
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; overflow: hidden; }
+    html, body { height: 100%; }
     body { font-family: 'Jost', sans-serif; font-weight: 300; background: #888; }
 
     /* ── MOBILE OVERLAY MENU ── */
@@ -63,6 +63,37 @@
       padding: 8px; color: #808080;
     }
     .mobile-menu-btn svg { width: 22px; height: 22px; }
+
+    /* ── DESKTOP SCROLL HINT ── */
+    .desktop-scroll-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 70;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      animation: fadeUp 1s 2s cubic-bezier(0.22, 1, 0.36, 1) both;
+      transition: opacity 0.5s ease;
+      cursor: pointer;
+    }
+    .desktop-scroll-hint__box {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(32,30,28,0.72); border: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 14px; border-radius: 15px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+    .desktop-scroll-hint__text {
+      font-family: 'Jost', sans-serif; font-weight: 300;
+      font-size: 0.72rem; letter-spacing: 0.04em;
+      color: rgba(240,237,232,0.65);
+    }
+    .desktop-scroll-hint__arrow {
+      width: 16px; height: 16px; color: rgba(240,237,232,0.4);
+      animation: bounceDown 1.8s ease-in-out infinite;
+    }
 
     /* ── MOBILE SCROLL HINT ── */
     .mobile-scroll-hint {
@@ -195,7 +226,8 @@
 
     /* ── MAIN LAYOUT ── */
     .content {
-      position: fixed; top: 60px; left: 0; right: 0; bottom: 0;
+      position: relative; margin-top: 60px;
+      height: calc(100vh - 60px);
       z-index: 50; display: flex; align-items: stretch;
     }
 
@@ -541,6 +573,44 @@ position: relative;
       font-size: 0.78rem; color: #f0ede8; line-height: 1.6;
     }
 
+    /* ── FOOTER ── */
+    .site-footer {
+      background: #1a1a1a;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .footer__logo {
+      width: 110px;
+      filter: brightness(0) invert(1);
+      opacity: 0.35;
+      margin-bottom: 18px;
+    }
+    .footer__text {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.78rem;
+      color: rgba(240,237,232,0.3);
+      letter-spacing: 0.04em;
+    }
+    .footer__links {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .footer__links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(240,237,232,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: rgba(240,237,232,0.6); }
+
     /* ── RESPONSIVE ── */
     @media screen and (min-width: 1800px) {
       .hero__content { margin: -220px 0 0 0; }
@@ -591,7 +661,8 @@ position: relative;
 
     @media (max-width: 900px) {
       html, body { overflow: auto; }
-      .content { position: relative; top: 0; flex-direction: column; }
+      .content { position: relative; top: 0; flex-direction: column; height: auto; }
+      .desktop-scroll-hint { display: none; }
       .photo-zone { width: 100%; height: calc(100vh - 60px); height: calc(100dvh - 60px); flex-shrink: 0; }
       .photo-zone__img {
         margin: 0; mask-image: none; height: 100%;
@@ -770,9 +841,30 @@ position: relative;
           <span class="form__success" id="formSuccess">You're on the list. We'll be in touch.</span>
         </form>
       </div>
-    </div>
+
+      <!-- Desktop scroll hint -->
+      <!-- <div class="desktop-scroll-hint" id="desktopScrollHint">
+        <div class="desktop-scroll-hint__box">
+          <span class="desktop-scroll-hint__text">More below</span>
+          <svg class="desktop-scroll-hint__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+      </div>
+    </div> -->
 
   </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="site-footer" id="siteFooter">
+    <img class="footer__logo" src="logo/big-text.png" alt="Scott Olivia">
+    <p class="footer__text">&copy; 2026 Scott Olivia. All rights reserved.</p>
+    <ul class="footer__links">
+      <li><a href="big-screen.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </footer>
 
   <!-- Cursor tooltip — shows as static hint on load, follows cursor on hover -->
   <div id="cursorTip" role="tooltip">
@@ -1072,6 +1164,33 @@ position: relative;
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && mobileOverlay.classList.contains('open')) closeMobileMenu();
   });
+
+  /* ── Desktop scroll hint + footer scroll behaviour ── */
+  const desktopHint = document.getElementById('desktopScrollHint');
+  const siteFooter  = document.getElementById('siteFooter');
+  const contentEl   = document.querySelector('.content');
+
+  desktopHint.addEventListener('click', () => {
+    siteFooter.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  /* Fade hint + cursor tip as user scrolls toward footer */
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY || window.pageYOffset;
+    if (scrollY > 60) {
+      desktopHint.style.opacity = '0';
+      desktopHint.style.pointerEvents = 'none';
+      tip.style.opacity = '0';
+      tip.style.pointerEvents = 'none';
+    } else {
+      desktopHint.style.opacity = '';
+      desktopHint.style.pointerEvents = '';
+      if (!dialog.classList.contains('on')) {
+        tip.style.opacity = '';
+        tip.style.pointerEvents = '';
+      }
+    }
+  }, { passive: true });
 
   /* ── Product data ── */
   const PRODUCTS = {
