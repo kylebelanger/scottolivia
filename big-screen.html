@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&amp;family=Jost:wght@200;300;400&amp;display=swap" rel="stylesheet">
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; overflow: hidden; }
     body { font-family: 'Jost', sans-serif; font-weight: 300; background: #888; }
 
@@ -98,6 +98,10 @@
     @keyframes bounceDown {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(6px); }
+    }
+    @keyframes slowZoom {
+      from { transform: scale(1); }
+      to   { transform: scale(1.06); }
     }
 
     @keyframes fadeUp {
@@ -592,6 +596,7 @@ position: relative;
       .photo-zone__img {
         margin: 0; mask-image: none; height: 100%;
         object-position: center center; scale: 1;
+        animation: slowZoom 8s ease-out forwards;
       }
       .content__panel { width: 100%; height: auto; border-left: none; border-top: none; flex: none;
         min-height: calc(100vh - 60px); min-height: calc(100dvh - 60px);
@@ -877,7 +882,7 @@ position: relative;
 
   function isMobile() { return window.innerWidth <= 900; }
 
-  const slideDelay = 5000000;
+  const slideDelay = 5000;
   const photoZoneEl = document.getElementById('photoZone');
   const heroImgEl = document.getElementById('heroImg');
   const heroImgNextEl = document.getElementById('heroImgNext');
@@ -957,6 +962,10 @@ position: relative;
       incomingImg.classList.remove('animate-in');
       currentSlide = nextIndex;
       isAnimating = false;
+      /* Restart mobile zoom animation */
+      outgoingImg.style.animation = 'none';
+      outgoingImg.offsetHeight; /* force reflow */
+      outgoingImg.style.animation = '';
       updateSlideDots();
       scheduleNextSlide();
     });
