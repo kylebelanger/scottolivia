@@ -11,6 +11,95 @@
     html, body { height: 100%; overflow: hidden; }
     body { font-family: 'Jost', sans-serif; font-weight: 300; background: #888; }
 
+    /* ── MOBILE OVERLAY MENU ── */
+    .mobile-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(30,28,26,0.97);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .mobile-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .mobile-overlay a {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 300;
+      font-size: 1.8rem;
+      color: #f0ede8;
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s;
+    }
+    .mobile-overlay.open a {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .mobile-overlay.open a:nth-child(1) { transition-delay: 0.08s; }
+    .mobile-overlay.open a:nth-child(2) { transition-delay: 0.14s; }
+    .mobile-overlay.open a:nth-child(3) { transition-delay: 0.20s; }
+    .mobile-overlay.open a:nth-child(4) { transition-delay: 0.26s; }
+    .mobile-overlay a:hover { color: rgba(240,237,232,0.6); }
+    .mobile-overlay__close {
+      position: absolute; top: 18px; right: 20px;
+      background: none; border: none; cursor: pointer;
+      color: rgba(240,237,232,0.5); padding: 8px;
+      transition: color 0.2s;
+    }
+    .mobile-overlay__close:hover { color: #f0ede8; }
+    .mobile-overlay__close svg { width: 24px; height: 24px; }
+
+    /* ── MOBILE HAMBURGER (hidden on desktop) ── */
+    .mobile-menu-btn {
+      display: none;
+      background: none; border: none; cursor: pointer;
+      padding: 8px; color: #808080;
+    }
+    .mobile-menu-btn svg { width: 22px; height: 22px; }
+
+    /* ── MOBILE SCROLL HINT ── */
+    .mobile-scroll-hint {
+      display: none;
+      position: absolute;
+      bottom: 28px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 25;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: fadeUp 1s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .mobile-scroll-hint__box {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(32,30,28,0.88); border: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 16px; border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .mobile-scroll-hint__text {
+      font-family: 'Jost', sans-serif; font-weight: 300;
+      font-size: 0.78rem; letter-spacing: 0.04em;
+      color: #f0ede8;
+    }
+    .mobile-scroll-hint__sub {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 0.72rem; color: rgba(240,237,232,0.5);
+    }
+    .mobile-scroll-hint__arrow {
+      width: 20px; height: 20px; color: rgba(240,237,232,0.45);
+      animation: bounceDown 1.8s ease-in-out infinite;
+    }
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -497,19 +586,56 @@ position: relative;
     }
 
     @media (max-width: 900px) {
-      .content { flex-direction: column; }
-      .photo-zone { width: 100%; height: 55%; }
-      .content__panel { width: 100%; border-left: none; border-top: 6px solid #bfbfbf; }
-      .hero__content { margin: 0; padding: 28px 24px; }
-      .hero__logo { width: 260px; margin: 0 auto 15px; }
-      .hero__title { font-size: 24px; }
-      .hero__subtitle { margin: 24px 0; font-size: 16px; }
+      html, body { overflow: auto; }
+      .content { position: relative; top: 0; flex-direction: column; }
+      .photo-zone { width: 100%; height: calc(100vh - 60px); height: calc(100dvh - 60px); flex-shrink: 0; }
+      .photo-zone__img {
+        margin: 0; mask-image: none; height: 100%;
+        object-position: center center; scale: 1;
+      }
+      .content__panel { width: 100%; height: auto; border-left: none; border-top: none; flex: none;
+        min-height: calc(100vh - 60px); min-height: calc(100dvh - 60px);
+      }
+      .hero__content { margin: 0; padding: 56px 24px 64px; }
+      .hero__logo { width: 220px; margin: 0 auto 20px; }
+      .hero__title { font-size: 24px; margin-bottom: 18px; }
+      .hero__subtitle { margin: 20px 0; font-size: 15px; line-height: 1.65; width: 100%; }
+      .form { margin: 28px 0 0 0; min-width: unset; width: 100%; }
+      .form__row { width: 100%; }
+      /* Hide desktop hotspots & tooltip on mobile */
+      .hs, #cursorTip { display: none !important; }
+      /* Show mobile scroll hint */
+      .mobile-scroll-hint { display: flex; }
+      .photo-caption { display: none; }
+      .slide-controls { bottom: 80px; opacity: 0.5; }
+      /* Product dialog mobile */
+      .d-card { flex-direction: column; width: 95vw; min-height: auto; max-height: 85vh; }
+      .d-img-col { width: 100%; min-height: 180px; }
+      .d-rule { width: 100%; height: 1px; }
     }
     @media (max-width: 640px) {
-      nav { padding: 0 20px; }
+      nav { padding: 0 16px; height: 54px; }
+      .nav__links { display: none; }
+      .mobile-menu-btn { display: flex; align-items: center; }
+      .mobile-overlay { display: flex; }
+      .content { top: 0; }
+      .photo-zone { height: calc(100vh - 54px); height: calc(100dvh - 54px); }
+      .content__panel { min-height: calc(100vh - 54px); min-height: calc(100dvh - 54px); }
+      .hero__content { padding: 48px 24px 56px; }
+      .hero__logo { width: 200px; }
+      .hero__title { font-size: 22px; }
+      .hero__subtitle { font-size: 14.5px; margin: 18px 0; }
+      .form { margin-top: 24px; }
       .form__row { flex-direction: column; }
       .form__input { border-right: 1px solid #9e9b98; border-bottom: none; width: 100%; }
       .form__btn { border: 1px solid #9e9b98; width: 100%; margin: 0; }
+      .slide-controls { gap: 6px; bottom: 72px; }
+      .slide-dot { width: 8px; height: 8px; }
+    }
+    @media (max-width: 380px) {
+      .hero__logo { width: 160px; }
+      .hero__title { font-size: 19px; }
+      .hero__subtitle { font-size: 13.5px; }
     }
   </style>
 </head>
@@ -517,6 +643,11 @@ position: relative;
 
   <nav>
     <span class="nav__logo"><a href="big-screen.html" style="display:flex;align-items:center;text-decoration:none"><img src="logo/big-text.png" alt="Scott Olivia"></a></span>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
     <ul class="nav__links">
       <li>
         <div class="nav-menu" id="mainMenu" aria-expanded="false">
@@ -534,6 +665,19 @@ position: relative;
       </li>
     </ul>
   </nav>
+
+  <!-- Mobile fullscreen overlay menu -->
+  <div class="mobile-overlay" id="mobileOverlay">
+    <button class="mobile-overlay__close" id="mobileOverlayClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <a href="about.html">About</a>
+    <a href="about.html#materials">Materials</a>
+    <a href="about.html#design-philosophy">Design Philosophy</a>
+    <a href="contact.html">Contact</a>
+  </div>
 
   <main class="content">
 
@@ -582,6 +726,18 @@ position: relative;
       <!-- Rug -->
       <div class="hs" data-pid="rug" data-ny="636" data-nh="202" style="left: 10.5%; width: 85.5%; top: 571.063px; height: 141.207px;"></div>
 
+      <!-- Mobile scroll hint -->
+      <div class="mobile-scroll-hint" id="mobileScrollHint">
+        <div class="mobile-scroll-hint__box">
+          <div>
+            <span class="mobile-scroll-hint__text">Scroll down to explore</span><br>
+            <span class="mobile-scroll-hint__sub">Swipe through our showroom</span>
+          </div>
+        </div>
+        <svg class="mobile-scroll-hint__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
 
     </div>
 
@@ -701,38 +857,90 @@ position: relative;
   });
 
   /* ── Slide show ── */
-  const slides = ['img/1.png', 'img/2.png', 'img/3.png'];
-  const slideDelay = 5000;
+  const desktopSlides = ['img/1.png', 'img/2.png', 'img/3.png'];
+
+  /* Mobile slides: same images but with different object-position crops
+     to showcase individual furniture pieces at full-screen size */
+  const mobileSlides = [
+    { src: 'img/1.png', pos: 'center center', caption: 'Living room overview' },
+    { src: 'img/1.png', pos: '15% 55%',       caption: 'Meridian Sofa — Belgian linen' },
+    { src: 'img/1.png', pos: '50% 40%',       caption: 'Leaf Console Table — dark walnut' },
+    { src: 'img/1.png', pos: '40% 70%',       caption: 'Basin Coffee Table — American walnut' },
+    { src: 'img/2.png', pos: 'center 40%',    caption: 'Leaf Console Table — alternate view' },
+    { src: 'img/3.png', pos: 'center center',  caption: 'Versails Area Rug — hand-knotted wool' },
+    { src: 'img/3.png', pos: '30% 60%',       caption: 'Rug & furniture detail' },
+  ];
+
+  function isMobile() { return window.innerWidth <= 900; }
+
+  const slideDelay = 5000000;
   const photoZoneEl = document.getElementById('photoZone');
   const heroImgEl = document.getElementById('heroImg');
   const heroImgNextEl = document.getElementById('heroImgNext');
-  const slideDots = document.querySelectorAll('.slide-dot');
+  const slideControlsEl = document.getElementById('slideControls');
 
+  let slides = desktopSlides;
   let currentSlide = 0;
   let slideTimer = null;
   let isPaused = false;
   let isAnimating = false;
 
+  function getActiveSlides() {
+    return isMobile() ? mobileSlides : desktopSlides;
+  }
+
+  /* Dynamically build the right number of dots */
+  function buildDots() {
+    const count = getActiveSlides().length;
+    slideControlsEl.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'slide-dot' + (i === currentSlide ? ' active' : '');
+      dot.type = 'button';
+      dot.dataset.index = i;
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      dot.addEventListener('click', () => {
+        if (Number(dot.dataset.index) !== currentSlide) changeSlide(Number(dot.dataset.index));
+      });
+      slideControlsEl.appendChild(dot);
+    }
+  }
+
   function updateSlideDots() {
-    slideDots.forEach(dot => dot.classList.toggle('active', Number(dot.dataset.index) === currentSlide));
+    slideControlsEl.querySelectorAll('.slide-dot').forEach(dot =>
+      dot.classList.toggle('active', Number(dot.dataset.index) === currentSlide)
+    );
+  }
+
+  function applyMobilePosition(imgEl, slideIndex) {
+    if (isMobile()) {
+      imgEl.style.objectPosition = mobileSlides[slideIndex].pos;
+    } else {
+      imgEl.style.objectPosition = '';
+    }
   }
 
   function scheduleNextSlide() {
     clearTimeout(slideTimer);
     if (isPaused) return;
-    slideTimer = setTimeout(() => changeSlide((currentSlide + 1) % slides.length), slideDelay);
+    const activeSlides = getActiveSlides();
+    slideTimer = setTimeout(() => changeSlide((currentSlide + 1) % activeSlides.length), slideDelay);
   }
 
   function changeSlide(nextIndex) {
+    const activeSlides = getActiveSlides();
     if (nextIndex === currentSlide || isAnimating) return;
     const outgoingImg = heroImgEl;
     const incomingImg = heroImgNextEl;
+    const mobile = isMobile();
+    const nextSrc = mobile ? activeSlides[nextIndex].src : activeSlides[nextIndex];
 
     incomingImg.classList.remove('animate-in', 'animate-out');
     outgoingImg.classList.remove('animate-in', 'animate-out');
 
     function beginTransition() {
       incomingImg.removeEventListener('load', beginTransition);
+      if (mobile) applyMobilePosition(incomingImg, nextIndex);
       isAnimating = true;
       requestAnimationFrame(() => {
         incomingImg.classList.add('animate-in');
@@ -740,12 +948,20 @@ position: relative;
       });
     }
 
-    incomingImg.addEventListener('load', beginTransition);
-    incomingImg.src = slides[nextIndex];
+    /* If same src (just different crop), force the transition immediately */
+    if (incomingImg.src.endsWith(nextSrc) || incomingImg.getAttribute('src') === nextSrc) {
+      incomingImg.src = nextSrc;
+      if (mobile) applyMobilePosition(incomingImg, nextIndex);
+      beginTransition();
+    } else {
+      incomingImg.addEventListener('load', beginTransition);
+      incomingImg.src = nextSrc;
+    }
 
     incomingImg.addEventListener('animationend', function handler() {
       incomingImg.removeEventListener('animationend', handler);
-      outgoingImg.src = slides[nextIndex];
+      outgoingImg.src = nextSrc;
+      if (mobile) applyMobilePosition(outgoingImg, nextIndex);
       outgoingImg.classList.remove('animate-out');
       incomingImg.classList.remove('animate-in');
       currentSlide = nextIndex;
@@ -754,14 +970,6 @@ position: relative;
       scheduleNextSlide();
     });
   }
-
-  slideDots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      const targetIndex = Number(dot.dataset.index);
-      if (targetIndex === currentSlide) return;
-      changeSlide(targetIndex);
-    });
-  });
 
   function pauseSlides() {
     isPaused = true;
@@ -776,6 +984,50 @@ position: relative;
 
   photoZoneEl.addEventListener('mouseenter', pauseSlides);
   photoZoneEl.addEventListener('mouseleave', resumeSlides);
+
+  /* ── Mobile touch swipe for slides ── */
+  let touchStartX = 0;
+  photoZoneEl.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].clientX;
+  }, { passive: true });
+  photoZoneEl.addEventListener('touchend', e => {
+    if (!isMobile()) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const activeSlides = getActiveSlides();
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) changeSlide((currentSlide + 1) % activeSlides.length);
+      else changeSlide((currentSlide - 1 + activeSlides.length) % activeSlides.length);
+    }
+  }, { passive: true });
+
+  /* Initialize slides — apply mobile positions if needed */
+  function initSlides() {
+    currentSlide = 0;
+    isAnimating = false;
+    clearTimeout(slideTimer);
+    buildDots();
+    if (isMobile()) {
+      applyMobilePosition(heroImgEl, 0);
+      heroImgEl.src = mobileSlides[0].src;
+    } else {
+      heroImgEl.style.objectPosition = '';
+      heroImgEl.src = desktopSlides[0];
+    }
+    updateSlideDots();
+    scheduleNextSlide();
+  }
+
+  /* Re-init on resize crossing the mobile threshold */
+  let wasMobile = isMobile();
+  window.addEventListener('resize', () => {
+    const nowMobile = isMobile();
+    if (nowMobile !== wasMobile) {
+      wasMobile = nowMobile;
+      initSlides();
+    }
+  });
+
+  initSlides();
 
   const menuToggle = document.getElementById('menuToggle');
   const menuNav = document.getElementById('mainMenu');
@@ -804,8 +1056,26 @@ position: relative;
     }
   });
 
-  updateSlideDots();
-  scheduleNextSlide();
+  /* ── Mobile overlay menu ── */
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  const mobileClose = document.getElementById('mobileOverlayClose');
+  const mobileLinks = mobileOverlay.querySelectorAll('a');
+
+  function openMobileMenu() {
+    mobileOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    mobileOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  mobileBtn.addEventListener('click', openMobileMenu);
+  mobileClose.addEventListener('click', closeMobileMenu);
+  mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mobileOverlay.classList.contains('open')) closeMobileMenu();
+  });
 
   /* ── Product data ── */
   const PRODUCTS = {
