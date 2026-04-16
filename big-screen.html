@@ -245,10 +245,14 @@
       z-index: 60;
     }
     .hero__content {
-      margin: -125px 0 0 40px;
+      margin: -125px 0 0 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .hero__logo {
-      display: block; width: 400px; margin: 0 0 0 153px;
+      display: block; width: 400px; margin: 0 auto;
       filter: brightness(0); opacity: 0.85;
       animation: fadeUp 1.2s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
@@ -271,10 +275,12 @@
     /* ── FORM ── */
     .form {
       display: flex; flex-direction: column; align-items: center; gap: 10px;
-      margin: 45px 0 0 0;
+      margin: 45px 50px 0 50px;
       animation: fadeUp 1.0s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+              width: 44%;
+        min-width: 555px;
     }
-    .form__row { display: flex; align-items: stretch; width: 85%; max-width: 680px; }
+    .form__row { display: flex; align-items: stretch; width: 100%; }
     .form__input {
       flex: 1 1 0; min-width: 0; background: #ffffff;
       border: 1px solid #9e9b98; border-right: none; color: #1c1c1c;
@@ -442,7 +448,7 @@ position: relative;
 
     /* ── RESPONSIVE ── */
     @media screen and (min-width: 1800px) {
-      .hero__content { margin: -220px 0 0 40px; }
+      .hero__content { margin: -220px 0 0 0; }
       .hero__logo { width: 440px; }
       .hero__subtitle { font-size: 19px; }
     }
@@ -451,6 +457,7 @@ position: relative;
     @media screen and (min-width: 2400px) {
       .photo-zone__img {
         /* scale: .65; */
+        margin: 250px 0 0 0 !important;
       }
       .d-card {
             width: min(1260px, 88vw);
@@ -461,25 +468,23 @@ position: relative;
       }
       /* Wider text block and larger logo for big screen */
       .hero__content {
-        margin: -400px 0 0 40px;
+        margin: -400px 0 0 0;
       }
       .hero__logo {
         width: 480px;
       }
       .hero__subtitle {
         font-size: 20px;
+        width: 65%;
+        line-height: 1.65;
       }
       .form {
         margin-top: 65px !important;
       }
-      .form__row {
-        max-width: 96% !important;
-        width: 100%;
-      }
       /* Static hint tooltip repositioned for larger screen */
       #cursorTip {
         left: 530px;
-        top: 195px;
+        top: 215px;
       }
       /* Caption repositioned for bigger screens while keeping bottom-left alignment */
       .photo-caption {
