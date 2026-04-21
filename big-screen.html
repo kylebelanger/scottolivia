@@ -165,25 +165,27 @@
       opacity: 1;
     }
     .nav-menu a {
-      color: #808080;
+      color: #262626;
       text-decoration: none;
       opacity: 0;
       transition: opacity 0.18s ease 0.1s;
+      font-family: 'Jost', sans-serif;
     }
     .nav-menu.open a {
       opacity: 1;
+      color: #626262 !important;
     }
 
     .menu-toggle {
       border: none;
       background: none;
-      color: #808080;
+      color: #262626;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
     }
     .menu-toggle:focus-visible {
-      outline: 1px solid #242424;
+      outline: 1px solid #262626;
       outline-offset: 3px;
     }
     .menu-text-open {
@@ -191,6 +193,8 @@
       display: inline-block;
       float: left;
       font-size: 16px;
+      color: #626262;
+      font-family: 'Jost', sans-serif;
     }
     .menu-toggle .hamburger {
       width: 18px;
@@ -582,14 +586,14 @@ position: relative;
     .footer__logo {
       width: 110px;
       filter: brightness(0) invert(1);
-      opacity: 0.35;
+      opacity: 0.8;
       margin-bottom: 18px;
     }
     .footer__text {
       font-family: 'Jost', sans-serif;
       font-weight: 200;
       font-size: 0.78rem;
-      color: rgba(240,237,232,0.3);
+      color: rgba(240,237,232,0.8);
       letter-spacing: 0.04em;
     }
     .footer__links {
@@ -605,7 +609,7 @@ position: relative;
       font-size: 0.75rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(240,237,232,0.3);
+      color: rgba(240,237,232,0.8);
       text-decoration: none;
       transition: color 0.2s;
     }
@@ -616,6 +620,17 @@ position: relative;
       .hero__content { margin: -220px 0 0 0; }
       .hero__logo { width: 440px; }
       .hero__subtitle { font-size: 19px; }
+    }
+
+    @media screen and (min-width: 1400px) {
+          .photo-zone__img {
+            scale: 1.45 !important;
+            margin: 112px 0 0 -95px !important;
+          }
+
+          .form__row {
+            width: 75% !important
+          }
     }
 
     /* ── 2560px+ WIDESCREEN: scale image to .65 ── */
@@ -858,7 +873,7 @@ position: relative;
   <!-- ═══════════ FOOTER ═══════════ -->
   <footer class="site-footer" id="siteFooter">
     <img class="footer__logo" src="logo/big-text.png" alt="Scott Olivia">
-    <p class="footer__text">&copy; 2026 Scott Olivia. All rights reserved.</p>
+    <p class="footer__text">&copy; 2026 Scott Olivia LLC. All rights reserved. Privacy Policy.</p>
     <ul class="footer__links">
       <li><a href="big-screen.html">Home</a></li>
       <li><a href="about.html">About</a></li>
@@ -1168,23 +1183,22 @@ position: relative;
   /* ── Desktop scroll hint + footer scroll behaviour ── */
   const desktopHint = document.getElementById('desktopScrollHint');
   const siteFooter  = document.getElementById('siteFooter');
-  const contentEl   = document.querySelector('.content');
 
-  desktopHint.addEventListener('click', () => {
-    siteFooter.scrollIntoView({ behavior: 'smooth' });
-  });
+  if (desktopHint) {
+    desktopHint.addEventListener('click', () => {
+      siteFooter.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
 
-  /* Fade hint + cursor tip as user scrolls toward footer */
+  /* Hide cursor tip when scrolled away from content */
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY || window.pageYOffset;
     if (scrollY > 60) {
-      desktopHint.style.opacity = '0';
-      desktopHint.style.pointerEvents = 'none';
+      if (desktopHint) { desktopHint.style.opacity = '0'; desktopHint.style.pointerEvents = 'none'; }
       tip.style.opacity = '0';
       tip.style.pointerEvents = 'none';
     } else {
-      desktopHint.style.opacity = '';
-      desktopHint.style.pointerEvents = '';
+      if (desktopHint) { desktopHint.style.opacity = ''; desktopHint.style.pointerEvents = ''; }
       if (!dialog.classList.contains('on')) {
         tip.style.opacity = '';
         tip.style.pointerEvents = '';
