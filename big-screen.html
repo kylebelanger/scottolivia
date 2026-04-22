@@ -633,16 +633,17 @@ position: relative;
             mask-image: none !important;
           }
 
-          /* .form__row {
-            width: 75% !important
-          } */
+          .form__row {
+            /* width: 95% !important */
+            margin: 0 0 0 -12px;
+          }
     }
 
     /* ── 2560px+ WIDESCREEN: scale image to .65 ── */
     @media screen and (min-width: 2400px) {
       .photo-zone__img {
         /* scale: .65; */
-        margin: 250px 0 0 0 !important;
+        margin: 175px 0 0 -200px !important;
       }
       .d-card {
             width: min(1260px, 88vw);
@@ -658,13 +659,17 @@ position: relative;
       .hero__logo {
         width: 480px;
       }
+      .hero__title {
+        line-height: 1.5 !important;
+      }
       .hero__subtitle {
         font-size: 20px;
         width: 65%;
-        line-height: 1.65;
+        line-height: 2;
       }
       .form {
-        margin-top: 65px !important;
+        margin-top: 25px !important;
+        width: 64%;
       }
       /* Static hint tooltip repositioned for larger screen */
       #cursorTip {
@@ -994,7 +999,7 @@ position: relative;
 
   function isMobile() { return window.innerWidth <= 900; }
 
-  const slideDelay = 5000;
+  const slideDelay = 3800;
   const photoZoneEl = document.getElementById('photoZone');
   const heroImgEl = document.getElementById('heroImg');
   const heroImgNextEl = document.getElementById('heroImgNext');
