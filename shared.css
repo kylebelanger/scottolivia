@@ -77,6 +77,12 @@ nav {
 }
 .nav-menu a:hover { color: #1c1c1c; }
 .nav-menu.open a { opacity: 1; }
+.nav-menu a.nav-active {
+  color: #1c1c1c;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
 .menu-toggle {
   border: none; background: none; color: #808080;
   cursor: pointer; display: inline-flex; align-items: center;
