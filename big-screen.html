@@ -131,7 +131,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 10%;
+      object-position: right 15%;
       display: block;
       image-rendering: high-quality;
       z-index: 1;
@@ -242,7 +242,8 @@
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300; font-style: italic;
       font-size: clamp(22px, 2.4vw, 40px); color: #f0ede8;
-      line-height: 1.3; margin-bottom: 24px;
+      line-height: 1.3; 
+      margin: -15px 0 24px 0;
       text-align: center;
       animation: fadeUp 1.0s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
@@ -262,7 +263,7 @@
       display: flex; flex-direction: column; align-items: center; gap: 10px;
       width: 70%;
       animation: fadeUp 1.0s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
-      margin: 8px 0 0 0;
+      margin: 10px 0 0 0;
     }
     .form__row { display: flex; align-items: stretch; width: 100%; }
     .form__input {
@@ -442,6 +443,16 @@ position: relative;
       #cursorTip { left: calc(25vw - 140px); top: 28vh; width: 280px !important; }
       .tip-text, .tip-name, .tip-sub { font-size: 15px; }
       .photo-caption { font-size: 0.85rem; }
+
+          .hero__logo {
+            
+    }
+    .hero__title {
+      
+    }
+    .hero__subtitle {
+      
+    }
     }
 
     /* ── TABLET + MOBILE: single-column layout ── */
@@ -681,7 +692,11 @@ position: relative;
   });
 
   /* ── Slide show ── */
-  const desktopSlides = ['img/1.png', 'img/2.png', 'img/3.png'];
+  const desktopSlides = [
+    { src: 'img/1.png', pos: 'right 15%' },
+    { src: 'img/2.png', pos: 'center 10%' },
+    { src: 'img/3.png', pos: 'right 15%' },
+  ];
 
   /* Mobile slides: dedicated cropped photos for each product spotlight */
   const mobileSlides = [
@@ -737,6 +752,11 @@ position: relative;
     return typeof s === 'string' ? s : s.src;
   }
 
+  function getSlidePos(activeSlides, index) {
+    const s = activeSlides[index];
+    return (s && s.pos) ? s.pos : 'right 15%';
+  }
+
   function scheduleNextSlide() {
     clearTimeout(slideTimer);
     if (isPaused) return;
@@ -750,12 +770,14 @@ position: relative;
     const outgoingImg = heroImgEl;
     const incomingImg = heroImgNextEl;
     const nextSrc = getSlideSrc(activeSlides, nextIndex);
+    const nextPos = getSlidePos(activeSlides, nextIndex);
 
     incomingImg.classList.remove('animate-in', 'animate-out');
     outgoingImg.classList.remove('animate-in', 'animate-out');
 
     function beginTransition() {
       incomingImg.removeEventListener('load', beginTransition);
+      incomingImg.style.objectPosition = nextPos;
       isAnimating = true;
       requestAnimationFrame(() => {
         incomingImg.classList.add('animate-in');
@@ -769,6 +791,8 @@ position: relative;
     incomingImg.addEventListener('animationend', function handler() {
       incomingImg.removeEventListener('animationend', handler);
       outgoingImg.src = nextSrc;
+      outgoingImg.style.objectPosition = nextPos;
+      incomingImg.style.objectPosition = '';
       outgoingImg.classList.remove('animate-out');
       incomingImg.classList.remove('animate-in');
       currentSlide = nextIndex;
@@ -795,7 +819,10 @@ position: relative;
   }
 
   photoZoneEl.addEventListener('mouseenter', pauseSlides);
-  photoZoneEl.addEventListener('mouseleave', () => { resumeSlides(); resetTip(); });
+  photoZoneEl.addEventListener('mouseleave', () => {
+    resetTip();
+    if (!dialog.classList.contains('on')) resumeSlides();
+  });
 
   /* ── Mobile touch swipe for slides ── */
   let touchStartX = 0;
@@ -820,7 +847,7 @@ position: relative;
     buildDots();
     const activeSlides = getActiveSlides();
     heroImgEl.src = getSlideSrc(activeSlides, 0);
-    if (!isMobile()) heroImgEl.style.objectPosition = '';
+    if (!isMobile()) heroImgEl.style.objectPosition = getSlidePos(activeSlides, 0);
     updateSlideDots();
     scheduleNextSlide();
   }
@@ -949,8 +976,8 @@ position: relative;
   const heroImg   = document.getElementById('heroImg');
   const photoZone = document.getElementById('photoZone');
 
-  /* Matches CSS object-position Y value (center 10%) */
-  const OBJ_POS_Y = 0.10;
+  /* Matches CSS object-position Y value (right 15%) */
+  const OBJ_POS_Y = 0.15;
 
   function positionHotspots() {
     const pzRect = photoZone.getBoundingClientRect();
@@ -1096,27 +1123,11 @@ position: relative;
 
   function closeDialog() {
     dialog.classList.remove('on');
-    tip.style.opacity = '';
     tip.style.pointerEvents = '';
+    resetTip();
+    // Resume slideshow only if cursor has already left the photo zone;
+    // otherwise the photo-zone mouseleave handler will resume it later.
     if (!photoZoneEl.matches(':hover')) resumeSlides();
-
-    // Check if cursor is still over a hotspot after dialog closes
-    // Use elementFromPoint with last known cursor position
-    const el = document.elementFromPoint(lastMouseX, lastMouseY);
-    const hs = el && el.closest('.hs');
-    if (hs) {
-      const p = PRODUCTS[hs.dataset.pid];
-      if (p) {
-        tipName.textContent = p.name;
-        tip.style.left  = (lastMouseX + 18) + 'px';
-        tip.style.top   = (lastMouseY - 10) + 'px';
-        tip.style.width = 'auto';
-        tip.classList.add('on');
-      }
-    } else {
-      // Cursor not over a hotspot — restore static hint
-      resetTip();
-    }
   }
   dClose.addEventListener('click', closeDialog);
   dBackdrop.addEventListener('click', closeDialog);
