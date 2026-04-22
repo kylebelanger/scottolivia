@@ -560,7 +560,7 @@ position: relative;
       <div class="hero__content">
         <img class="hero__logo" src="logo/big-text.png" alt="Scott Olivia" id="logoImg">
         <h1 class="hero__title">Furniture shaped by nature,<br>made for quiet living</h1>
-        <p class="hero__subtitle">Scott Olivia is a Washington D.C.-based design studio creating exclusive furniture and soft furnishings in handmade small batches. Every piece begins with the natural world — its textures, rhythms, and unhurried beauty — and is brought to life through meticulous domestic craftsmanship.</p>
+        <p class="hero__subtitle">Scott Olivia is a Washington D.C. based design studio creating exclusive furniture and soft furnishings in handmade small batches. Every piece begins with the natural world — its textures, rhythms, and unhurried beauty — and is brought to life through meticulous domestic craftsmanship.</p>
 
         <form class="form" id="earlyAccessForm" novalidate="">
           <div class="form__row">
@@ -1017,11 +1017,29 @@ position: relative;
   const tip     = document.getElementById('cursorTip');
   const tipName = document.getElementById('tipName');
 
+  // Sync tip's home top to the logo's vertical center
+  let tipHomeTop = '28vh';
+  let syncTimer;
+  function syncTipHome() {
+    const logoRect = logoImg.getBoundingClientRect();
+    if (logoRect.height > 0) {
+      tipHomeTop = (logoRect.top + logoRect.height * 0.4) + 'px';
+      // If tip is currently in home position (not following cursor), update it immediately
+      if (!tip.classList.contains('on')) tip.style.top = tipHomeTop;
+    }
+  }
+  // Sync as soon as the logo image is sized, not at window load
+  if (logoImg.complete && logoImg.naturalHeight > 0) {
+    syncTipHome();
+  } else {
+    logoImg.addEventListener('load', syncTipHome);
+  }
+  window.addEventListener('resize', () => { clearTimeout(syncTimer); syncTimer = setTimeout(syncTipHome, 40); });
+
   function resetTip() {
     tip.classList.remove('on');
-    // Clear inline styles so the CSS-defined position (left/top) takes over
     tip.style.left    = '';
-    tip.style.top     = '';
+    tip.style.top     = tipHomeTop;
     tip.style.width   = '';
     tip.style.opacity = '';
     tipName.textContent = 'Interactive products below';

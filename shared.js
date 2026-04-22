@@ -36,12 +36,12 @@
   function buildFooter() {
     return `<footer class="site-footer" id="siteFooter">
     <img class="footer__logo" src="logo/big-text.png" alt="Scott Olivia">
-    <p class="footer__text">&copy; 2026 Scott Olivia LLC. Washington D.C. All rights reserved. Privacy Policy.</p>
     <ul class="footer__links">
       <li><a href="big-screen.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
+    <p class="footer__text">&copy; 2026 Scott Olivia LLC. Washington D.C. All rights reserved. Privacy Policy.</p>
   </footer>`;
   }
 

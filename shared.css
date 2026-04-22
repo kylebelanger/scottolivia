@@ -107,14 +107,14 @@ nav {
 /* ── FOOTER ── */
 .site-footer {
   background: #1a1a1a;
-  padding: 48px 40px;
+  padding: 45px 40px 50px 40px;
   text-align: center;
 }
 .footer__logo {
-  width: 110px;
+  width: 165px;
   filter: brightness(0) invert(1);
   opacity: 0.8;
-  margin-bottom: 18px;
+  margin-bottom: 0px;
 }
 .footer__text {
   font-family: 'Jost', sans-serif;
@@ -122,9 +122,10 @@ nav {
   font-size: 0.78rem;
   color: rgba(240,237,232,0.8);
   letter-spacing: 0.04em;
+  margin-top: 25px;
 }
 .footer__links {
-  margin-top: 16px;
+  /* margin-top: 16px; */
   display: flex;
   justify-content: center;
   gap: 28px;
