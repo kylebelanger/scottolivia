@@ -234,7 +234,7 @@
       align-items: center;
     }
     .hero__logo {
-      display: block; width: clamp(260px, 26vw, 460px); margin: 0 auto;
+      display: block; width: clamp(260px, 26vw, 550px); margin: 0 auto;
       filter: brightness(0); opacity: 0.85;
       animation: fadeUp 1.2s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
@@ -319,7 +319,7 @@
       left: calc(25vw - 117px);
       top: 28vh;
       width: 235px;
-      opacity: 0.45;
+      opacity: 0.75;
       transition: opacity 0.15s ease;
     }
     /* On hover: full opacity, follows cursor via JS */
@@ -440,7 +440,7 @@ position: relative;
     @media screen and (min-width: 2400px) {
       .d-card { width: min(1260px, 88vw); min-height: 650px; }
       .d-img-col img { max-height: 90%; }
-      #cursorTip { left: calc(25vw - 140px); top: 28vh; width: 280px !important; }
+      #cursorTip { left: calc(25vw - 140px); width: 280px !important; }
       .tip-text, .tip-name, .tip-sub { font-size: 15px; }
       .photo-caption { font-size: 0.85rem; }
 
@@ -591,8 +591,8 @@ position: relative;
   <div id="cursorTip" role="tooltip">
     <div class="tip-box">
       <div class="tip-text">
-        <span class="tip-name" id="tipName">Interactive products below</span>
-        <span class="tip-sub">Hover below to view items</span>
+        <span class="tip-name" id="tipName">Preview products below</span>
+        <span class="tip-sub">Hover below to preview</span>
       </div>
       <div class="tip-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -1021,10 +1021,14 @@ position: relative;
   let tipHomeTop = '28vh';
   let syncTimer;
   function syncTipHome() {
+    if (window.innerWidth >= 2400) {
+      tipHomeTop = '335px';
+      if (!tip.classList.contains('on')) tip.style.top = tipHomeTop;
+      return;
+    }
     const logoRect = logoImg.getBoundingClientRect();
     if (logoRect.height > 0) {
       tipHomeTop = (logoRect.top + logoRect.height * 0.4) + 'px';
-      // If tip is currently in home position (not following cursor), update it immediately
       if (!tip.classList.contains('on')) tip.style.top = tipHomeTop;
     }
   }
@@ -1042,7 +1046,7 @@ position: relative;
     tip.style.top     = tipHomeTop;
     tip.style.width   = '';
     tip.style.opacity = '';
-    tipName.textContent = 'Interactive products below';
+    tipName.textContent = 'Preview products below';
   }
 
   // Always track cursor position — even while dialog is open
@@ -1134,13 +1138,14 @@ position: relative;
     ).join('');
     dialog.classList.add('on');
     tip.classList.remove('on');
-    tip.style.opacity = '0';
+    tip.style.visibility = 'hidden';
     tip.style.pointerEvents = 'none';
     pauseSlides();
   }
 
   function closeDialog() {
     dialog.classList.remove('on');
+    tip.style.visibility = '';
     tip.style.pointerEvents = '';
     resetTip();
     // Resume slideshow only if cursor has already left the photo zone;
