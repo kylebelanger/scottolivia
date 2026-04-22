@@ -47,7 +47,7 @@
     .mobile-scroll-hint {
       display: none;
       position: absolute;
-      bottom: 28px; left: 32%;
+      bottom: 90px; left: 32%;
       transform: translateX(-50%);
       z-index: 25;
       flex-direction: column;
@@ -233,6 +233,11 @@
       flex-direction: column;
       align-items: center;
     }
+    /* Desktop: transparent wrapper — children flow as normal */
+    .hero__header { display: contents; }
+    /* Mobile photo overlay — hidden on desktop */
+    .mobile-photo-header { display: none; }
+
     .hero__logo {
       display: block; width: clamp(260px, 26vw, 550px); margin: 0 auto;
       filter: brightness(0); opacity: 0.85;
@@ -469,7 +474,36 @@ position: relative;
       .content__panel { width: 100%; height: auto; border-left: none; border-top: none; flex: none;
         min-height: calc(100vh - 60px); min-height: calc(100dvh - 60px);
       }
-      .hero__content { margin: 0; padding: 56px 24px 64px; }
+      /* Mobile overlay: logo + title directly on photo, transparent */
+      .mobile-photo-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        /* top: 95px; */
+        left: 0;
+        right: 0;
+        z-index: 20;
+        padding: 0 32px;
+        text-align: center;
+        animation: fadeUp 1.2s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+        opacity: .6 !important;
+        background-color: grey;
+        padding: 115px 0;
+        height: 100%;
+      }
+      .mobile-photo-header__logo {
+        width: 415px; filter: brightness(0) invert(1); opacity: 0.92; margin-bottom: 12px;
+      }
+      .mobile-photo-header__title {
+        font-family: 'Cormorant Garamond', serif; font-weight: 300; font-style: italic;
+        font-size: 28px; color: rgba(240,237,232,0.95); line-height: 1.35;
+        text-shadow: 0 1px 12px rgba(0,0,0,0.35);
+        margin: -55px 0 0 0;
+      }
+      /* Hide the logo+title from the panel on mobile — show only subtitle + form */
+      .hero__header { display: none; }
+      .hero__content { margin: 0; padding: 48px 24px 64px; }
       .hero__logo { width: 220px; margin: 0 auto 20px; }
       .hero__title { font-size: 24px; margin-bottom: 18px; }
       .hero__subtitle { margin: 20px 0; font-size: 15px; line-height: 1.65; width: 100%; }
@@ -488,14 +522,15 @@ position: relative;
       .photo-zone { height: calc(100vh); }
       .content__panel { min-height: calc(100vh - 54px); min-height: calc(100dvh - 54px); }
       .hero__content { padding: 48px 24px 56px; }
-      .hero__logo { width: 200px; }
-      .hero__title { font-size: 22px; }
+      .mobile-photo-header__logo { width: 415px; }
+      .mobile-photo-header__title {        font-size: 28px;
+        margin: -55px 0 0 0; }
       .hero__subtitle { font-size: 14.5px; margin: 18px 0; }
       .form { margin-top: 24px; }
       .form__row { flex-direction: column; }
       .form__input { border-right: 1px solid #9e9b98; border-bottom: none; width: 100%; }
       .form__btn { border: 1px solid #9e9b98; width: 100%; margin: 0; }
-      .slide-controls { gap: 6px;         bottom: 125px;
+      .slide-controls { gap: 6px;         bottom: 185px;
         left: 47%; }
       .slide-dot { width: 8px; height: 8px; }
     }
@@ -540,6 +575,12 @@ position: relative;
         JS converts Y to screen px using the rendered cover scale factor.
       -->
 
+      <!-- Mobile: logo + title overlay above scroll hint -->
+      <div class="mobile-photo-header">
+        <img class="mobile-photo-header__logo" src="logo/big-text.png" alt="Scott Olivia">
+        <p class="mobile-photo-header__title">Furniture shaped by nature,<br>made for quiet living</p>
+      </div>
+
       <!-- Mobile scroll hint -->
       <div class="mobile-scroll-hint" id="mobileScrollHint">
         <div class="mobile-scroll-hint__box">
@@ -558,8 +599,10 @@ position: relative;
     <!-- RIGHT 50%: info panel -->
     <div class="content__panel">
       <div class="hero__content">
-        <img class="hero__logo" src="logo/big-text.png" alt="Scott Olivia" id="logoImg">
-        <h1 class="hero__title">Furniture shaped by nature,<br>made for quiet living</h1>
+        <div class="hero__header">
+          <img class="hero__logo" src="logo/big-text.png" alt="Scott Olivia" id="logoImg">
+          <h1 class="hero__title">Furniture shaped by nature,<br>made for quiet living</h1>
+        </div>
         <p class="hero__subtitle">Scott Olivia is a Washington D.C. based design studio creating exclusive furniture and soft furnishings in handmade small batches. Every piece begins with the natural world — its textures, rhythms, and unhurried beauty — and is brought to life through meticulous domestic craftsmanship.</p>
 
         <form class="form" id="earlyAccessForm" novalidate="">
