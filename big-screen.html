@@ -494,11 +494,22 @@ position: relative;
         margin-top: 25px !important;
         width: 64%;
       }
+      .form__input {
+        font-size: 16px;
+      }
+      .form__btn {
+        font-size: 14px;
+      }
       /* Static hint tooltip repositioned for larger screen */
       #cursorTip {
         left: 530px;
         top: 215px;
+        width: 280px !important;
       }
+      .tip-text, .tip-name, .tip-sub {
+        font-size: 15px;
+      }
+
       /* Caption repositioned for bigger screens while keeping bottom-left alignment */
       .photo-caption {
         bottom: 22px;
@@ -758,7 +769,7 @@ position: relative;
 
   function isMobile() { return window.innerWidth <= 900; }
 
-  const slideDelay = 3800;
+  const slideDelay = 3400;
   const photoZoneEl = document.getElementById('photoZone');
   const heroImgEl = document.getElementById('heroImg');
   const heroImgNextEl = document.getElementById('heroImgNext');
@@ -1187,12 +1198,14 @@ position: relative;
     tip.classList.remove('on');
     tip.style.opacity = '0';
     tip.style.pointerEvents = 'none';
+    pauseSlides();
   }
 
   function closeDialog() {
     dialog.classList.remove('on');
     tip.style.opacity = '';
     tip.style.pointerEvents = '';
+    if (!photoZoneEl.matches(':hover')) resumeSlides();
 
     // Check if cursor is still over a hotspot after dialog closes
     // Use elementFromPoint with last known cursor position
