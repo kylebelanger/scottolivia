@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -23,106 +24,6 @@
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    /* ── MOBILE OVERLAY MENU ── */
-    .mobile-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 300;
-      background: rgba(30,28,26,0.97);
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-    .mobile-overlay.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .mobile-overlay a {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; font-weight: 300;
-      font-size: 1.8rem;
-      color: #f0ede8;
-      text-decoration: none;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s;
-    }
-    .mobile-overlay.open a {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .mobile-overlay.open a:nth-child(1) { transition-delay: 0.08s; }
-    .mobile-overlay.open a:nth-child(2) { transition-delay: 0.14s; }
-    .mobile-overlay.open a:nth-child(3) { transition-delay: 0.20s; }
-    .mobile-overlay.open a:nth-child(4) { transition-delay: 0.26s; }
-    .mobile-overlay a:hover { color: rgba(240,237,232,0.6); }
-    .mobile-overlay__close {
-      position: absolute; top: 18px; right: 20px;
-      background: none; border: none; cursor: pointer;
-      color: rgba(240,237,232,0.5); padding: 8px;
-      transition: color 0.2s;
-    }
-    .mobile-overlay__close:hover { color: #f0ede8; }
-    .mobile-overlay__close svg { width: 24px; height: 24px; }
-
-    /* ── MOBILE HAMBURGER (hidden on desktop) ── */
-    .mobile-menu-btn {
-      display: none;
-      background: none; border: none; cursor: pointer;
-      padding: 8px; color: #808080;
-    }
-    .mobile-menu-btn svg { width: 22px; height: 22px; }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 60px; padding: 0 48px;
-      display: flex; align-items: center; justify-content: space-between;
-      background-color: rgba(255,255,255,0.97);
-      border-bottom: 2px solid #242424;
-    }
-    .nav__logo { display: flex; align-items: center; }
-    .nav__logo a { display: flex; align-items: center; text-decoration: none; }
-    .nav__logo img { width: 130px; filter: brightness(0); opacity: 0.88; }
-    .nav__links { display: flex; align-items: center; gap: 16px; list-style: none; font-family: sans-serif; color: #626262; }
-    .nav-menu {
-      display: flex; align-items: center; gap: 30px;
-      overflow: hidden; max-width: 0; opacity: 0;
-      transition: max-width 0.38s ease, opacity 0.38s ease;
-      white-space: nowrap;
-    }
-    .nav-menu.open { max-width: 520px; opacity: 1; }
-    .nav-menu a {
-      color: #808080; text-decoration: none;
-      opacity: 0; transition: opacity 0.18s ease 0.1s;
-      font-size: 15px;
-    }
-    .nav-menu a:hover { color: #1c1c1c; }
-    .nav-menu.open a { opacity: 1; }
-    .menu-toggle {
-      border: none; background: none; color: #808080;
-      cursor: pointer; display: inline-flex; align-items: center;
-    }
-    .menu-toggle:focus-visible { outline: 1px solid #242424; outline-offset: 3px; }
-    .menu-text-open { margin: 0 10px 0 0; display: inline-block; float: left; font-size: 16px; }
-    .menu-toggle .hamburger {
-      width: 18px; height: 9px; position: relative;
-      display: inline-block; color: #a0a0a0; margin: 2px 15px 0 0;
-    }
-    .menu-toggle .hamburger::before,
-    .menu-toggle .hamburger::after {
-      content: ''; position: absolute; left: 0; width: 100%; height: 2px;
-      background: currentColor; transition: transform 0.25s ease, top 0.25s ease, left 0.25s ease;
-      transform-origin: center;
-    }
-    .menu-toggle .hamburger::before { top: 0; }
-    .menu-toggle .hamburger::after { bottom: 0; }
-    .menu-toggle.open .hamburger::before { top: 50%; left: 2px; transform: translateY(-50%) rotate(90deg); }
-    .menu-toggle.open .hamburger::after { top: 50%; left: 10px; transform: translateY(-50%) rotate(90deg); }
 
     /* ── PAGE CONTENT ── */
     .page { padding-top: 60px; }
@@ -347,47 +248,6 @@ section.hero::before {
     }
     .form-error.visible { display: block; }
 
-    /* ── FOOTER ── */
-    .site-footer {
-      background: #1a1a1a;
-      padding: 48px 40px;
-      text-align: center;
-    }
-    .footer__logo {
-      width: 110px;
-      filter: brightness(0) invert(1);
-      opacity: 0.35;
-      margin-bottom: 18px;
-    }
-    .footer__text {
-      font-family: 'Jost', sans-serif;
-      font-weight: 200;
-      font-size: 0.78rem;
-      color: rgba(240,237,232,0.3);
-      letter-spacing: 0.04em;
-    }
-    .footer__links {
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      list-style: none;
-    }
-    .footer__links a {
-      font-family: 'Jost', sans-serif;
-      font-weight: 300;
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(240,237,232,0.3);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer__links a:hover { color: rgba(240,237,232,0.6); }
-
-
-
-
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .contact-wrap {
@@ -397,10 +257,6 @@ section.hero::before {
       }
     }
     @media (max-width: 640px) {
-      nav { padding: 0 20px; height: 54px; }
-      .nav__links { display: none; }
-      .mobile-menu-btn { display: flex; align-items: center; }
-      .mobile-overlay { display: flex; }
       .hero { min-height: 32vh; }
       .hero__content { padding: 48px 24px; }
       .contact-wrap { padding: 40px 20px 56px; }
@@ -410,43 +266,7 @@ section.hero::before {
 </head>
 <body>
 
-  <nav>
-    <span class="nav__logo"><a href="big-screen.html"><img src="logo/big-text.png" alt="Scott Olivia"></a></span>
-    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-    </button>
-    <ul class="nav__links">
-      <li>
-        <div class="nav-menu" id="mainMenu" aria-expanded="false">
-          <a href="about.html">About</a>
-          <a href="about.html#materials">Materials</a>
-          <a href="about.html#design-philosophy">Design Philosophy</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </li>
-      <li>
-        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainMenu">
-          <span class="hamburger"></span>
-          <span class="menu-text-open">Menu</span>
-        </button>
-      </li>
-    </ul>
-  </nav>
-
-  <!-- Mobile fullscreen overlay menu -->
-  <div class="mobile-overlay" id="mobileOverlay">
-    <button class="mobile-overlay__close" id="mobileOverlayClose" aria-label="Close menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-    <a href="about.html">About</a>
-    <a href="about.html#materials">Materials</a>
-    <a href="about.html#design-philosophy">Design Philosophy</a>
-    <a href="#contact">Contact</a>
-  </div>
+  <div id="so-nav"></div>
 
   <div class="page">
 
@@ -521,60 +341,20 @@ section.hero::before {
 
     </div>
 
-    <!-- ═══════════ FOOTER ═══════════ -->
-    <footer class="site-footer">
-      <img class="footer__logo" src="logo/big-text.png" alt="Scott Olivia">
-      <p class="footer__text">&copy; 2026 Scott Olivia. All rights reserved.</p>
-      <ul class="footer__links">
-        <li><a href="big-screen.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </footer>
+    <div id="so-footer"></div>
 
   </div>
 
+  <script src="shared.js"></script>
   <script>
-  /* ── Menu toggle ── */
-  const menuToggle = document.getElementById('menuToggle');
-  const menuNav = document.getElementById('mainMenu');
-  const menuLinks = menuNav.querySelectorAll('a');
-
-  function toggleMenu() {
-    const isOpen = !menuNav.classList.contains('open');
-    menuNav.classList.toggle('open', isOpen);
-    menuToggle.classList.toggle('open', isOpen);
-    menuToggle.setAttribute('aria-expanded', String(isOpen));
-    menuNav.setAttribute('aria-expanded', String(isOpen));
-  }
-  function closeMenu() {
-    menuNav.classList.remove('open');
-    menuToggle.classList.remove('open');
-    menuToggle.setAttribute('aria-expanded', 'false');
-    menuNav.setAttribute('aria-expanded', 'false');
-  }
-  menuToggle.addEventListener('click', toggleMenu);
-  menuLinks.forEach(link => link.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && menuNav.classList.contains('open')) closeMenu();
-  });
-
-  /* ── Mobile overlay menu ── */
-  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const mobileOverlay = document.getElementById('mobileOverlay');
-  const mobileOverlayClose = document.getElementById('mobileOverlayClose');
-  const mobileOverlayLinks = mobileOverlay.querySelectorAll('a');
-
-  function openMobileMenu() { mobileOverlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
-  function closeMobileMenu() { mobileOverlay.classList.remove('open'); document.body.style.overflow = ''; }
-
-  mobileMenuBtn.addEventListener('click', openMobileMenu);
-  mobileOverlayClose.addEventListener('click', closeMobileMenu);
-  mobileOverlayLinks.forEach(a => a.addEventListener('click', closeMobileMenu));
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && mobileOverlay.classList.contains('open')) closeMobileMenu();
-  });
-
+  initShared([
+    { label: 'About',             href: 'about.html' },
+    { label: 'Materials',         href: 'about.html#materials' },
+    { label: 'Design Philosophy', href: 'about.html#design-philosophy' },
+    { label: 'Contact',           href: '#contact' },
+  ]);
+  </script>
+  <script>
   /* ── Contact form ── */
   const form = document.getElementById('contactForm');
   const formError = document.getElementById('formError');
