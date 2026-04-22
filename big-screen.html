@@ -235,8 +235,9 @@
     }
     /* Desktop: transparent wrapper — children flow as normal */
     .hero__header { display: contents; }
-    /* Mobile photo overlay — hidden on desktop */
+    /* Mobile-only elements — hidden on desktop */
     .mobile-photo-header { display: none; }
+    .mobile-about-label { display: none; }
 
     .hero__logo {
       display: block; width: clamp(260px, 26vw, 550px); margin: 0 auto;
@@ -474,36 +475,31 @@ position: relative;
       .content__panel { width: 100%; height: auto; border-left: none; border-top: none; flex: none;
         min-height: calc(100vh - 60px); min-height: calc(100dvh - 60px);
       }
-      /* Mobile overlay: logo + title directly on photo, transparent */
+      /* Mobile overlay: semi-transparent grey covering full photo zone */
       .mobile-photo-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: absolute;
-        /* top: 95px; */
-        left: 0;
-        right: 0;
-        z-index: 20;
-        padding: 0 32px;
-        text-align: center;
-        animation: fadeUp 1.2s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-        opacity: .6 !important;
-        background-color: grey;
-        padding: 115px 0;
-        height: 100%;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        position: absolute; inset: 0;
+        z-index: 20; padding: 0 32px; text-align: center;
+        background: rgba(110, 110, 110, 0.55);
+        padding-bottom: 85% !important;
+        animation: fadeUp 0.9s 0s cubic-bezier(0.22, 1, 0.36, 1) both;
       }
       .mobile-photo-header__logo {
-        width: 415px; filter: brightness(0) invert(1); opacity: 0.92; margin-bottom: 12px;
+        width: 400px; filter: brightness(0) invert(1); opacity: 0.5; margin-bottom: 16px;
       }
       .mobile-photo-header__title {
         font-family: 'Cormorant Garamond', serif; font-weight: 300; font-style: italic;
         font-size: 28px; color: rgba(240,237,232,0.95); line-height: 1.35;
-        text-shadow: 0 1px 12px rgba(0,0,0,0.35);
-        margin: -55px 0 0 0;
       }
       /* Hide the logo+title from the panel on mobile — show only subtitle + form */
       .hero__header { display: none; }
       .hero__content { margin: 0; padding: 48px 24px 64px; }
+      .mobile-about-label {
+        display: block;
+        font-family: 'Jost', sans-serif; font-weight: 300;
+        font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+        color: rgba(240,237,232,0.55); margin-bottom: 16px; width: 100%;
+      }
       .hero__logo { width: 220px; margin: 0 auto 20px; }
       .hero__title { font-size: 24px; margin-bottom: 18px; }
       .hero__subtitle { margin: 20px 0; font-size: 15px; line-height: 1.65; width: 100%; }
@@ -522,9 +518,8 @@ position: relative;
       .photo-zone { height: calc(100vh); }
       .content__panel { min-height: calc(100vh - 54px); min-height: calc(100dvh - 54px); }
       .hero__content { padding: 48px 24px 56px; }
-      .mobile-photo-header__logo { width: 415px; }
-      .mobile-photo-header__title {        font-size: 28px;
-        margin: -55px 0 0 0; }
+      .mobile-photo-header__logo { width: 400px; opacity: .5; }
+      .mobile-photo-header__title { font-size: 24px; margin: -55px 0 0 0; opacity: .75;}
       .hero__subtitle { font-size: 14.5px; margin: 18px 0; }
       .form { margin-top: 24px; }
       .form__row { flex-direction: column; }
@@ -603,6 +598,7 @@ position: relative;
           <img class="hero__logo" src="logo/big-text.png" alt="Scott Olivia" id="logoImg">
           <h1 class="hero__title">Furniture shaped by nature,<br>made for quiet living</h1>
         </div>
+        <p class="mobile-about-label">About</p>
         <p class="hero__subtitle">Scott Olivia is a Washington D.C. based design studio creating exclusive furniture and soft furnishings in handmade small batches. Every piece begins with the natural world — its textures, rhythms, and unhurried beauty — and is brought to life through meticulous domestic craftsmanship.</p>
 
         <form class="form" id="earlyAccessForm" novalidate="">
