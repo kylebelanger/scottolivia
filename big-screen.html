@@ -126,25 +126,17 @@
       We use object-position to crop the ceiling and show the furniture.
     */
     .photo-zone__img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    /* height: 100%; */
-    scale: 1.4;
-
-    height: auto;
-    object-fit: cover;
-    object-position: 8% 35%;
-    display: block;
-    image-rendering: high-quality;
-    z-index: 1;
-    pointer-events: none;
-
-    margin: 150px 0 0 0;
-
-    /* scale: .85;*/
-    mask-image: linear-gradient(transparent 0%, black 20%);
-    /* mask-image: radial-gradient(circle, black 78%, rgba(0, 0, 0, 0) 95%); */
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 10%;
+      display: block;
+      image-rendering: high-quality;
+      z-index: 1;
+      pointer-events: none;
+      /* mask-image: linear-gradient(transparent 0%, black 12%); */
     }
 
     .photo-zone__img--next {
@@ -235,43 +227,42 @@
       z-index: 60;
     }
     .hero__content {
-      margin: -125px 0 0 0;
+      margin: clamp(-240px, -16vh, -100px) 0 0 0;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .hero__logo {
-      display: block; width: 400px; margin: 0 auto;
+      display: block; width: clamp(260px, 26vw, 460px); margin: 0 auto;
       filter: brightness(0); opacity: 0.85;
       animation: fadeUp 1.2s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
     .hero__title {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300; font-style: italic;
-      font-size: 32px; color: #f0ede8;
+      font-size: clamp(22px, 2.4vw, 40px); color: #f0ede8;
       line-height: 1.3; margin-bottom: 24px;
       text-align: center;
       animation: fadeUp 1.0s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
     .hero__subtitle {
-font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    color: #f0ede8;
-    line-height: 2;
-    font-size: 18px;
-    margin: 22px 0 50px 0;
-    animation: fadeUp 1.0s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
-    width: 75%;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      color: #f0ede8;
+      line-height: 1.9;
+      font-size: clamp(14px, 1.3vw, 20px);
+      margin: clamp(14px, 2vh, 28px) 0 clamp(24px, 4vh, 56px) 0;
+      animation: fadeUp 1.0s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+      width: 70%;
     }
 
     /* ── FORM ── */
     .form {
       display: flex; flex-direction: column; align-items: center; gap: 10px;
-      margin: 0px 50px 0 50px;
+      width: 70%;
       animation: fadeUp 1.0s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
-              width: 73%;
-        min-width: 555px;
+      margin: 8px 0 0 0;
     }
     .form__row { display: flex; align-items: stretch; width: 100%; }
     .form__input {
@@ -279,6 +270,8 @@ font-family: 'Jost', sans-serif;
       border: 1px solid #9e9b98; border-right: none; color: #1c1c1c;
       padding: 0 14px; height: 44px; outline: none;
       transition: border-color 0.18s; -webkit-appearance: none; border-radius: 0;
+      font-size: 16px;
+      font-family: 'Jost', sans-serif;
     }
     .form__input::placeholder { color: #aaa8a5; }
     .form__input:focus { border-color: #555; }
@@ -287,7 +280,8 @@ font-family: 'Jost', sans-serif;
       flex: 0 0 auto; background: #ffffff; border: 1px solid #9e9b98; color: #1c1c1c;
       height: 44px; cursor: pointer; transition: background 0.18s, border-color 0.18s;
       white-space: nowrap; border-radius: 0; -webkit-appearance: none;
-      line-height: 1; margin: 0 0 0 5px; padding: 0 18px; font-size: 12px;
+      line-height: 1; margin: 0 0 0 5px; padding: 0 18px; font-size: 14px;
+      font-family: 'Jost', sans-serif;
     }
     .form__btn:hover { background: #f2f0ee; border-color: #777; }
     .form__btn:active { background: #e8e5e2; }
@@ -320,9 +314,9 @@ font-family: 'Jost', sans-serif;
       position: fixed;
       z-index: 600;
       pointer-events: none;
-      /* Default: static hint box visible at top-left of image */
-      left: 275px;
-      top: 145px;
+      /* Centered horizontally in the left 50% panel */
+      left: calc(25vw - 117px);
+      top: 28vh;
       width: 235px;
       opacity: 0.45;
       transition: opacity 0.15s ease;
@@ -441,92 +435,24 @@ position: relative;
     }
 
     /* ── RESPONSIVE ── */
-    @media screen and (min-width: 1800px) {
-      .hero__content { margin: -220px 0 0 0; }
-      .hero__logo { width: 440px; }
-      .hero__subtitle { font-size: 19px; }
-    }
-
-    @media screen and (min-width: 1400px) {
-          .photo-zone__img {
-            /* scale: 1.3 !important;
-            margin: 150px 0 0 -40px !important; */
-            scale: 1.49 !important;
-            margin: 100px 0 0 -70px !important;
-            mask-image: none !important;
-          }
-
-          .form__row {
-            /* width: 95% !important */
-            margin: 0 0 0 -12px;
-          }
-    }
-
-    /* ── 2560px+ WIDESCREEN: scale image to .65 ── */
+    /* ── 2400px+ WIDESCREEN ── */
     @media screen and (min-width: 2400px) {
-      .photo-zone__img {
-        /* scale: .65; */
-        margin: 175px 0 0 -200px !important;
-      }
-      .d-card {
-            width: min(1260px, 88vw);
-            min-height: 650px;
-      }
-      .d-img-col img {
-        max-height: 90%;
-        /* margin: -65px 0 0 0; */
-      }
-      /* Wider text block and larger logo for big screen */
-      .hero__content {
-        margin: -420px 0 0 0;
-      }
-      .hero__logo {
-        width: 480px;
-      }
-      .hero__title {
-        line-height: 1.5 !important;
-      }
-      .hero__subtitle {
-        font-size: 20px;
-        width: 65%;
-        line-height: 2;
-      }
-      .form {
-        margin-top: 25px !important;
-        width: 64%;
-      }
-      .form__input {
-        font-size: 16px;
-      }
-      .form__btn {
-        font-size: 14px;
-      }
-      /* Static hint tooltip repositioned for larger screen */
-      #cursorTip {
-        left: 530px;
-        top: 215px;
-        width: 280px !important;
-      }
-      .tip-text, .tip-name, .tip-sub {
-        font-size: 15px;
-      }
-
-      /* Caption repositioned for bigger screens while keeping bottom-left alignment */
-      .photo-caption {
-        bottom: 22px;
-        left: 22px;
-        font-size: 0.85rem;
-      }
+      .d-card { width: min(1260px, 88vw); min-height: 650px; }
+      .d-img-col img { max-height: 90%; }
+      #cursorTip { left: calc(25vw - 140px); top: 28vh; width: 280px !important; }
+      .tip-text, .tip-name, .tip-sub { font-size: 15px; }
+      .photo-caption { font-size: 0.85rem; }
     }
 
-    @media (max-width: 900px) {
+    /* ── TABLET + MOBILE: single-column layout ── */
+    @media (max-width: 1100px) {
       html, body { overflow: auto; }
       .content { position: relative; top: 0; flex-direction: column; height: auto; }
       .desktop-scroll-hint { display: none; }
       .photo-zone { width: 100%; height: calc(100vh - 60px); height: calc(100dvh - 60px); flex-shrink: 0; }
       .photo-zone__img {
-        margin: 0; mask-image: none; height: 100%;
         object-position: center center;
+        mask-image: none;
         animation: slowZoom 8s ease-out forwards;
       }
       .content__panel { width: 100%; height: auto; border-left: none; border-top: none; flex: none;
@@ -538,13 +464,10 @@ position: relative;
       .hero__subtitle { margin: 20px 0; font-size: 15px; line-height: 1.65; width: 100%; }
       .form { margin: 28px 0 0 0; min-width: unset; width: 100%; }
       .form__row { width: 100%; }
-      /* Hide desktop hotspots & tooltip on mobile */
       .hs, #cursorTip { display: none !important; }
-      /* Show mobile scroll hint */
       .mobile-scroll-hint { display: flex; }
       .photo-caption { display: none; }
       .slide-controls { bottom: 80px; opacity: 0.5; }
-      /* Product dialog mobile */
       .d-card { flex-direction: column; width: 95vw; min-height: auto; max-height: 85vh; }
       .d-img-col { width: 100%; min-height: 180px; }
       .d-rule { width: 100%; height: 1px; }
@@ -552,7 +475,6 @@ position: relative;
     @media (max-width: 640px) {
       .content { top: -10px; }
       .photo-zone { height: calc(100vh); }
-       .photo-zone__img { scale: 1;}
       .content__panel { min-height: calc(100vh - 54px); min-height: calc(100dvh - 54px); }
       .hero__content { padding: 48px 24px 56px; }
       .hero__logo { width: 200px; }
@@ -769,7 +691,7 @@ position: relative;
     { src: 'img/mobile/4.png' },
   ];
 
-  function isMobile() { return window.innerWidth <= 900; }
+  function isMobile() { return window.innerWidth <= 1100; }
 
   const slideDelay = 3400;
   const photoZoneEl = document.getElementById('photoZone');
@@ -873,7 +795,7 @@ position: relative;
   }
 
   photoZoneEl.addEventListener('mouseenter', pauseSlides);
-  photoZoneEl.addEventListener('mouseleave', resumeSlides);
+  photoZoneEl.addEventListener('mouseleave', () => { resumeSlides(); resetTip(); });
 
   /* ── Mobile touch swipe for slides ── */
   let touchStartX = 0;
@@ -1027,19 +949,8 @@ position: relative;
   const heroImg   = document.getElementById('heroImg');
   const photoZone = document.getElementById('photoZone');
 
-  let pastTip = document.getElementById('cursorTip');
-  let tipStatic = {};
-  tipStatic.left  = window.getComputedStyle(pastTip).left;
-  tipStatic.top   = window.getComputedStyle(pastTip).top;
-
-  function getCssScale() {
-    // Read the actual computed CSS scale property at runtime.
-    // This handles both .85 (default) and .65 (2560px+ media query) automatically.
-    const raw = getComputedStyle(heroImg).scale;
-    // 'scale' returns e.g. "0.85" or "none"
-    const parsed = parseFloat(raw);
-    return isNaN(parsed) ? 0.85 : parsed;
-  }
+  /* Matches CSS object-position Y value (center 10%) */
+  const OBJ_POS_Y = 0.10;
 
   function positionHotspots() {
     const pzRect = photoZone.getBoundingClientRect();
@@ -1047,22 +958,10 @@ position: relative;
     const zoneH  = pzRect.height;
     if (!zoneW || !zoneH) return;
 
-    const k = getCssScale(); // 0.85 on normal screens, 0.65 on 2560px+
-
     const coverScale = Math.max(zoneW / IMG_NAT_W, zoneH / IMG_NAT_H);
-    const rendW = IMG_NAT_W * coverScale;
-    const rendH = IMG_NAT_H * coverScale;
-    const offX  = (zoneW - rendW) * 0.08;
-    const offY  = (zoneH - rendH) * 0.35;
-
-    const cx = zoneW / 2;
-    const cy = zoneH / 2;
-    const effScale = coverScale * k;
-
-    // visOriginY: where nat y=0 maps to in pz-relative coords
-    // +150 is empirical calibration for scale:.85; scaled proportionally for other values
-    const calibration = 90 * (k / 0.85);
-    const visOriginY = offY * k + cy * (1 - k) + calibration + 50;
+    const rendH      = IMG_NAT_H * coverScale;
+    /* Where the top of the natural image maps to in zone-relative coords */
+    const visOriginY = (zoneH - rendH) * OBJ_POS_Y;
 
     photoZone.querySelectorAll('.hs').forEach(el => {
       const natY      = parseFloat(el.dataset.ny);
@@ -1070,8 +969,8 @@ position: relative;
       const isEllipse = el.classList.contains('hs-ellipse');
 
       const topNat   = isEllipse ? natY - natH : natY;
-      const topPx    = visOriginY + topNat * effScale;
-      const heightPx = natH * effScale * (isEllipse ? 2 : 1);
+      const topPx    = visOriginY + topNat * coverScale;
+      const heightPx = natH * coverScale * (isEllipse ? 2 : 1);
 
       el.style.top    = topPx + 'px';
       el.style.height = heightPx + 'px';
@@ -1091,27 +990,19 @@ position: relative;
   const tip     = document.getElementById('cursorTip');
   const tipName = document.getElementById('tipName');
 
-  // Returns the correct static hint position from current CSS (respects media queries)
-  function getHintPos() {
-    const cs = getComputedStyle(tip);
-    return { left: cs.left, top: cs.top, width: cs.width };
-  }
-
   function resetTip() {
     tip.classList.remove('on');
-    const pos = getHintPos();
-    tip.style.opacity = ".45 !important";
-    tip.style.left  = tipStatic.left;
-    tip.style.top   = tipStatic.top;
-    tip.style.width = 235;
+    // Clear inline styles so the CSS-defined position (left/top) takes over
+    tip.style.left    = '';
+    tip.style.top     = '';
+    tip.style.width   = '';
+    tip.style.opacity = '';
     tipName.textContent = 'Interactive products below';
   }
 
   // Always track cursor position — even while dialog is open
   let lastMouseX = 275, lastMouseY = 175;
   document.addEventListener('mousemove', e => {
-    tip.style.opacity = ".90 !important";
-
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
     if (tip.classList.contains('on')) {
