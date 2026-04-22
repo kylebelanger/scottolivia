@@ -142,6 +142,19 @@ nav {
 }
 .footer__links a:hover { color: rgba(240,237,232,0.6); }
 
+  @media screen and (min-width: 1400px){
+  .footer__logo {
+    width: 165px;
+    margin-bottom: 10px;
+  }
+  .footer__text {
+    font-size: 16px;
+  }
+  .footer__links a {
+    font-size: 16px;
+  }
+}
+
 /* ── RESPONSIVE NAV ── */
 @media (max-width: 640px) {
   nav { padding: 0 20px; height: 54px; }

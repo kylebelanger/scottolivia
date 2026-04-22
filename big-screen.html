@@ -588,35 +588,11 @@ position: relative;
       <!--
         HOTSPOT POSITIONS
         ─────────────────
-        Image natural size: 2000 × H px (confirm with your file)
-        Image fills photo-zone via object-fit:cover, object-position:center 35%
-
-        With object-fit:cover the browser scales the image so the shorter axis
-        fills the zone. The JS reads the *rendered* image rect via
-        getBoundingClientRect() which already accounts for object-fit,
-        so no manual scale math is needed for Y.
-
-        X coords: left/width as % of photo-zone width (0–100%).
-        These were measured from the screenshot where photo-zone = left 50% of viewport.
-
-        Y coords: data-ny/data-nh in NATURAL IMAGE pixels.
-        JS converts these to screen px using the rendered scale factor.
+        Hotspots are rendered by JS from SLIDE_HOTSPOTS below — one set per desktop slide.
+        X: left/width as % of photo-zone width (0–100%).
+        Y: data-ny/data-nh in NATURAL IMAGE pixels (IMG_NAT_W × IMG_NAT_H).
+        JS converts Y to screen px using the rendered cover scale factor.
       -->
-
-      <!-- Left Sofa -->
-      <div class="hs" data-pid="sofa-left" data-ny="420" data-nh="169" style="left: 15.5%; width: 30.5%; top: 420.069px; height: 118.138px;"></div>
-
-      <!-- Back Console Table -->
-      <div class="hs" data-pid="back-table" data-ny="363" data-nh="188" style="left: 46%; width: 15%; top: 380.224px; height: 131.42px;"></div>
-
-      <!-- Side Table (ellipse) -->
-      <div class="hs hs-ellipse" data-pid="side-table" data-ny="488" data-nh="101" style="left: 3.5%; width: 12%; border-radius: 50%; top: 430.001px; height: 141.207px;"></div>
-
-      <!-- Coffee Table (ellipse) -->
-      <div class="hs hs-ellipse" data-pid="coffee-table" data-ny="562" data-nh="118" style="left: 38%; width: 30%; border-radius: 50%; top: 466.846px; height: 164.974px;"></div>
-
-      <!-- Rug -->
-      <div class="hs" data-pid="rug" data-ny="636" data-nh="202" style="left: 10.5%; width: 85.5%; top: 571.063px; height: 141.207px;"></div>
 
       <!-- Mobile scroll hint -->
       <div class="mobile-scroll-hint" id="mobileScrollHint">
@@ -868,6 +844,7 @@ position: relative;
       outgoingImg.style.animation = '';
       updateSlideDots();
       scheduleNextSlide();
+      if (typeof renderHotspots === 'function') renderHotspots(currentSlide);
     });
   }
 
@@ -920,6 +897,7 @@ position: relative;
     if (nowMobile !== wasMobile) {
       wasMobile = nowMobile;
       initSlides();
+      if (typeof renderHotspots === 'function') renderHotspots(0);
     }
   });
 
@@ -1035,7 +1013,6 @@ position: relative;
 
   const heroImg   = document.getElementById('heroImg');
   const photoZone = document.getElementById('photoZone');
-  const hotspots  = document.querySelectorAll('.hs');
 
   let pastTip = document.getElementById('cursorTip');
   let tipStatic = {};
@@ -1074,7 +1051,7 @@ position: relative;
     const calibration = 90 * (k / 0.85);
     const visOriginY = offY * k + cy * (1 - k) + calibration + 50;
 
-    hotspots.forEach(el => {
+    photoZone.querySelectorAll('.hs').forEach(el => {
       const natY      = parseFloat(el.dataset.ny);
       const natH      = parseFloat(el.dataset.nh);
       const isEllipse = el.classList.contains('hs-ellipse');
@@ -1130,18 +1107,57 @@ position: relative;
     }
   });
 
-  hotspots.forEach(el => {
-    const p = PRODUCTS[el.dataset.pid];
-    el.addEventListener('mouseenter', e => {
-      tipName.textContent = p.name;
-      tip.style.left  = (e.clientX + 18) + 'px';
-      tip.style.top   = (e.clientY - 10) + 'px';
-      tip.style.width = 'auto';
-      tip.classList.add('on');
+  /* ── Per-slide hotspot definitions ──────────────────────────────────────
+     X: left/width as % of photo-zone width.
+     Y: ny/nh in natural image pixels (converted to screen px by positionHotspots).
+     Add entries for slides 1 and 2 once you've measured the hotspot positions.
+  ── */
+  const SLIDE_HOTSPOTS = [
+    /* Slide 0 — img/1.png */
+    [
+      { pid: 'sofa-left',    ny: 420, nh: 169, x: '15.5%', w: '30.5%', ellipse: false },
+      { pid: 'back-table',   ny: 363, nh: 188, x: '46%',   w: '15%',   ellipse: false },
+      { pid: 'side-table',   ny: 488, nh: 101, x: '3.5%',  w: '12%',   ellipse: true  },
+      { pid: 'coffee-table', ny: 562, nh: 118, x: '38%',   w: '30%',   ellipse: true  },
+      { pid: 'rug',          ny: 636, nh: 202, x: '10.5%', w: '85.5%', ellipse: false },
+    ],
+    /* Slide 1 — img/2.png (add hotspot entries here) */
+    [],
+    /* Slide 2 — img/3.png (add hotspot entries here) */
+    [],
+  ];
+
+  function renderHotspots(slideIdx) {
+    photoZone.querySelectorAll('.hs').forEach(el => el.remove());
+    resetTip();
+    const defs = isMobile() ? [] : (SLIDE_HOTSPOTS[slideIdx] || []);
+    defs.forEach(def => {
+      const el = document.createElement('div');
+      el.className = 'hs' + (def.ellipse ? ' hs-ellipse' : '');
+      el.dataset.pid = def.pid;
+      el.dataset.ny  = String(def.ny);
+      el.dataset.nh  = String(def.nh);
+      el.style.left  = def.x;
+      el.style.width = def.w;
+      if (def.ellipse) el.style.borderRadius = '50%';
+      photoZone.appendChild(el);
+
+      const p = PRODUCTS[def.pid];
+      if (!p) return;
+      el.addEventListener('mouseenter', e => {
+        tipName.textContent = p.name;
+        tip.style.left  = (e.clientX + 18) + 'px';
+        tip.style.top   = (e.clientY - 10) + 'px';
+        tip.style.width = 'auto';
+        tip.classList.add('on');
+      });
+      el.addEventListener('mouseleave', () => resetTip());
+      el.addEventListener('click', () => openDialog(def.pid));
     });
-    el.addEventListener('mouseleave', () => resetTip());
-    el.addEventListener('click', () => openDialog(el.dataset.pid));
-  });
+    positionHotspots();
+  }
+
+  renderHotspots(0);
 
   /* ── Modal dialog ── */
   const dialog    = document.getElementById('prodDialog');
