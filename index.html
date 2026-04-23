@@ -47,8 +47,9 @@
     .mobile-scroll-hint {
       display: none;
       position: absolute;
-      bottom: 90px; left: 32%;
-      transform: translateX(-50%);
+      bottom: 90px; left: 0; right: 0;
+      margin: 0 auto;
+      width: max-content;
       z-index: 25;
       flex-direction: column;
       align-items: center;
@@ -510,7 +511,7 @@ position: relative;
       .hs, #cursorTip { display: none !important; }
       .mobile-scroll-hint { display: flex; }
       .photo-caption { display: none; }
-      .slide-controls { bottom: 80px; opacity: 0.5; }
+      .slide-controls { bottom: 160px; right: auto; left: 50%; transform: translateX(-50%); opacity: 0.5; }
       .d-card { flex-direction: column; width: 95vw; min-height: auto; max-height: 85vh; }
       .d-img-col { width: 100%; min-height: 180px; }
       .d-rule { width: 100%; height: 1px; }
@@ -539,8 +540,7 @@ position: relative;
         position: abs;
         margin: 50px 0 0 0 !important;
         width: 100%; }
-      .slide-controls { gap: 6px;         bottom: 185px;
-        left: 48%; }
+      .slide-controls { gap: 6px; bottom: 185px; left: 50%; transform: translateX(-50%); }
       .slide-dot { width: 8px; height: 8px; }
     }
     @media (max-width: 380px) {
