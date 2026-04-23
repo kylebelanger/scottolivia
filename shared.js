@@ -3,7 +3,7 @@
     const desktopLinks = links.map(l => `<a href="${l.href}">${l.label}</a>`).join('\n          ');
     const mobileLinks  = links.map(l => `<a href="${l.href}">${l.label}</a>`).join('\n    ');
     return `<nav>
-    <span class="nav__logo"><a href="big-screen.html"><img src="logo/big-text.png" alt="Scott Olivia"></a></span>
+    <span class="nav__logo"><a href="index.html"><img src="logo/big-text.png" alt="Scott Olivia"></a></span>
     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
@@ -37,7 +37,7 @@
     return `<footer class="site-footer" id="siteFooter">
     <img class="footer__logo" src="logo/big-text.png" alt="Scott Olivia">
     <ul class="footer__links">
-      <li><a href="big-screen.html">Home</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
