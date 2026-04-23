@@ -154,6 +154,78 @@ nav {
   }
 }
 
+/* ── PRIVACY POLICY TRIGGER ── */
+.privacy-trigger {
+  background: none; border: none; padding: 0; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-weight: 300;
+  font-size: inherit; letter-spacing: inherit;
+  color: rgba(240,237,232,0.8);
+  text-decoration: underline; text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s;
+}
+.privacy-trigger:hover { color: rgba(240,237,232,0.5); }
+
+/* ── PRIVACY POLICY MODAL ── */
+.privacy-modal {
+  display: none;
+  position: fixed; inset: 0; z-index: 900;
+  align-items: center; justify-content: center; padding: 24px;
+}
+.privacy-modal.open { display: flex; }
+
+.privacy-modal__backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.55);
+}
+.privacy-modal__card {
+  position: relative; z-index: 1;
+  background: #faf8f5;
+  width: min(680px, 92vw);
+  max-height: 85vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.privacy-modal__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 28px 18px;
+  border-bottom: 1px solid #e4e0db;
+  flex-shrink: 0;
+}
+.privacy-modal__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-style: italic;
+  font-size: 1.4rem; color: #1a1a1a;
+}
+.privacy-modal__close {
+  background: none; border: none; cursor: pointer; padding: 4px;
+  color: #999; transition: color 0.2s;
+}
+.privacy-modal__close:hover { color: #1a1a1a; }
+.privacy-modal__close svg { width: 18px; height: 18px; display: block; }
+
+.privacy-modal__body {
+  overflow-y: auto; padding: 28px 28px 36px;
+   font-weight: 300;
+ line-height: 1.8; color: #444;
+}
+.privacy-modal__updated {
+  font-size: 0.75rem; color: #aaa; letter-spacing: 0.06em;
+  text-transform: uppercase; margin-bottom: 24px;
+}
+.privacy-modal__section {
+  font-family: 'Jost', sans-serif; font-weight: 300;
+  font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #888;
+  margin: 24px 0 8px;
+}
+.privacy-modal__body p { margin-bottom: 10px; }
+.privacy-modal__body ul {
+  margin: 8px 0 10px 20px; list-style: disc;
+}
+.privacy-modal__body ul li { margin-bottom: 4px; }
+.privacy-modal__body a { color: #1a1a1a; text-decoration: underline; text-underline-offset: 3px; }
+
 /* ── RESPONSIVE NAV ── */
 @media (max-width: 640px) {
   nav { padding: 0 20px; height: 54px; }

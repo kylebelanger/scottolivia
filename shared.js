@@ -41,8 +41,61 @@
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <p class="footer__text">&copy; 2026 Scott Olivia LLC. Washington D.C. All rights reserved. Privacy Policy.</p>
+    <p class="footer__text">&copy; 2026 Scott Olivia LLC. Washington D.C. All rights reserved.
+      <button class="privacy-trigger" id="privacyTrigger">Privacy Policy</button>
+    </p>
   </footer>`;
+  }
+
+  function buildPrivacyModal() {
+    return `<div class="privacy-modal" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+    <div class="privacy-modal__backdrop" id="privacyBackdrop"></div>
+    <div class="privacy-modal__card">
+      <div class="privacy-modal__header">
+        <h2 class="privacy-modal__title" id="privacyModalTitle">Privacy Policy</h2>
+        <button class="privacy-modal__close" id="privacyClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="privacy-modal__body">
+        <p class="privacy-modal__updated">Last updated: April 2026</p>
+
+        <h3 class="privacy-modal__section">About Us</h3>
+        <p>This Privacy Policy applies to Scott Olivia LLC, a limited liability company registered in Washington, D.C. ("Scott Olivia," "we," "us," or "our"). We operate the website scottolivia.com and are committed to protecting your privacy.</p>
+
+        <h3 class="privacy-modal__section">Information We Collect</h3>
+        <p>Scott Olivia LLC collects email addresses when you request early access or reach out through our contact form. We also automatically collect anonymised interaction data — such as pages viewed, scroll depth, and clicks — to better understand how visitors use our site.</p>
+
+        <h3 class="privacy-modal__section">How We Use Your Information</h3>
+        <p>Your information is used solely to:</p>
+        <ul>
+          <li>Respond to your inquiries and fulfil requests</li>
+          <li>Send updates about our collections, if you have opted in</li>
+          <li>Analyse and improve the browsing experience on our website</li>
+        </ul>
+
+        <h3 class="privacy-modal__section">What We Do Not Do</h3>
+        <p>Scott Olivia LLC does not sell, rent, trade, or transfer your personal information — including your email address — to any third party for commercial purposes, ever.</p>
+
+        <h3 class="privacy-modal__section">Page Interaction Tracking</h3>
+        <p>We capture anonymised interactions on our website (such as scroll behaviour, clicks, and time on page) to offer a better, more personalised customer experience. This data is never linked to your personal identity and is never shared with advertisers or third parties.</p>
+
+        <h3 class="privacy-modal__section">Cookies</h3>
+        <p>We use essential cookies to ensure basic site functionality. We may also use analytics cookies to understand aggregate visitor behaviour. You may disable cookies in your browser settings, though some features may be affected.</p>
+
+        <h3 class="privacy-modal__section">Data Security</h3>
+        <p>Scott Olivia LLC takes reasonable precautions to protect your personal information. Your email and contact details are stored securely and accessed only by authorised personnel.</p>
+
+        <h3 class="privacy-modal__section">Governing Law</h3>
+        <p>This Privacy Policy is governed by the laws of Washington, D.C. and applicable federal law. By using our website, you consent to the data practices described herein.</p>
+
+        <h3 class="privacy-modal__section">Contact</h3>
+        <p>For any privacy-related questions, please contact Scott Olivia LLC at <a href="mailto:hello@scottolivia.com">hello@scottolivia.com</a>.</p>
+      </div>
+    </div>
+  </div>`;
   }
 
   function initNavBehavior(keepMenuOpen) {
@@ -84,11 +137,31 @@
     });
   }
 
+  function initPrivacyModal() {
+    document.body.insertAdjacentHTML('beforeend', buildPrivacyModal());
+
+    const modal    = document.getElementById('privacyModal');
+    const backdrop = document.getElementById('privacyBackdrop');
+    const closeBtn = document.getElementById('privacyClose');
+    const trigger  = document.getElementById('privacyTrigger');
+
+    function openModal()  { modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+
+    trigger.addEventListener('click', openModal);
+    backdrop.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+  }
+
   window.initShared = function (links, options) {
     options = options || {};
     document.getElementById('so-nav').outerHTML    = buildNav(links);
     document.getElementById('so-footer').outerHTML = buildFooter();
     initNavBehavior(options.openMenuOnDesktop && window.innerWidth > 640);
+    initPrivacyModal();
 
     if (options.openMenuOnDesktop && window.innerWidth > 640) {
       const menuNav    = document.getElementById('mainMenu');
