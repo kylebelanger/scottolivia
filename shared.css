@@ -229,7 +229,7 @@ nav {
 
 /* ── RESPONSIVE NAV ── */
 @media (max-width: 640px) {
-  nav { padding: 0 20px; height: 54px; }
+  nav { padding: 0 20px; height: 75px; }
   .nav__links { display: none; }
   .mobile-menu-btn { display: flex; align-items: center; }
   .mobile-overlay { display: flex; }
