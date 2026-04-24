@@ -753,9 +753,10 @@ position: relative;
 
   /* Mobile slides: dedicated cropped photos for each product spotlight */
   const mobileSlides = [
-    { src: 'img/mobile/1.png' },
-    { src: 'img/mobile/3.png' },
-    { src: 'img/mobile/4.png' },
+    { src: 'img/mobile/1.png', pos: 'right 35%' },
+    { src: 'img/mobile/2.png', pos: 'right 35%' },
+    { src: 'img/mobile/4.png', pos: 'center 10%' },
+    { src: 'img/mobile/5.png', pos: 'center 10%' },
   ];
 
   function isMobile() { return window.innerWidth <= 1100; }
@@ -809,6 +810,11 @@ position: relative;
     return (s && s.pos) ? s.pos : 'right 15%';
   }
 
+  function getSlideScale(activeSlides, index) {
+    const s = activeSlides[index];
+    return (s && s.scale) ? String(s.scale) : '1';
+  }
+
   function scheduleNextSlide() {
     clearTimeout(slideTimer);
     if (isPaused) return;
@@ -823,6 +829,7 @@ position: relative;
     const incomingImg = heroImgNextEl;
     const nextSrc = getSlideSrc(activeSlides, nextIndex);
     const nextPos = getSlidePos(activeSlides, nextIndex);
+    const nextScale = isMobile() ? getSlideScale(activeSlides, nextIndex) : '1';
 
     incomingImg.classList.remove('animate-in', 'animate-out');
     outgoingImg.classList.remove('animate-in', 'animate-out');
@@ -830,6 +837,7 @@ position: relative;
     function beginTransition() {
       incomingImg.removeEventListener('load', beginTransition);
       incomingImg.style.objectPosition = nextPos;
+      incomingImg.style.scale = nextScale;
       isAnimating = true;
       requestAnimationFrame(() => {
         incomingImg.classList.add('animate-in');
@@ -844,7 +852,9 @@ position: relative;
       incomingImg.removeEventListener('animationend', handler);
       outgoingImg.src = nextSrc;
       outgoingImg.style.objectPosition = nextPos;
+      outgoingImg.style.scale = nextScale;
       incomingImg.style.objectPosition = '';
+      incomingImg.style.scale = '';
       outgoingImg.classList.remove('animate-out');
       incomingImg.classList.remove('animate-in');
       currentSlide = nextIndex;
@@ -900,6 +910,7 @@ position: relative;
     const activeSlides = getActiveSlides();
     heroImgEl.src = getSlideSrc(activeSlides, 0);
     if (!isMobile()) heroImgEl.style.objectPosition = getSlidePos(activeSlides, 0);
+    if (isMobile()) heroImgEl.style.scale = getSlideScale(activeSlides, 0);
     updateSlideDots();
     scheduleNextSlide();
   }
