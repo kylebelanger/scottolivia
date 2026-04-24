@@ -264,6 +264,27 @@
       .band { padding: 40px 20px; }
       .materials-grid { grid-template-columns: 1fr; gap: 20px; }
     }
+
+    /* ── STORY SLIDESHOW ── */
+    .story-slideshow {
+      position: relative;
+      height: 485px;
+      width: 100%;
+      overflow: hidden;
+      margin: 25px 0 0 0;
+    }
+    .story-slideshow__slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+    }
+    .story-slideshow__slide.active {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -291,9 +312,13 @@
       <p class="section__text">Each collection is developed in limited runs — never mass-produced, never rushed. Our workshop partners are small, family-operated studios across the United States who share our belief that patience is a material in itself. Together, we create pieces meant to age gracefully, gathering character the way a landscape gathers light.</p>
       <p class="section__text">We draw from the gentle contours of nature — the soft arc of a riverstone, the warm grain of sun-bleached driftwood, the quiet symmetry of a leaf at rest. These are not literal translations but quiet inspirations, woven into profiles and proportions that feel inherently calm.</p>
       </div>
-      <img src="img/about-slides/12.png" alt="" class="img-our-story-slide" style=" object-fit: cover;
-  height: 485px;
-  width: 100%;">
+      <div class="story-slideshow">
+        <img src="img/about-slides/3.png"   alt="" class="story-slideshow__slide active">
+        <img src="img/about-slides/4.png"   alt="" class="story-slideshow__slide">
+        <img src="img/about-slides/5.png"   alt="" class="story-slideshow__slide">
+        <img src="img/about-slides/12.png"  alt="" class="story-slideshow__slide">
+        <img src="img/about-slides/12a.png" alt="" class="story-slideshow__slide">
+      </div>
     </section>
 
     <div class="divider"><div class="divider__line"></div></div>
@@ -404,6 +429,18 @@
     { label: 'Design Philosophy', href: '#design-philosophy' },
     { label: 'Contact',           href: 'contact.html' },
   ], { openMenuOnDesktop: true, trackSections: true });
+  </script>
+  <script>
+  /* ── Story slideshow ── */
+  (function () {
+    const slides = document.querySelectorAll('.story-slideshow__slide');
+    let current = 0;
+    setInterval(function () {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 4000);
+  })();
   </script>
   <script>
   /* ── Scroll-triggered fade-in ── */
